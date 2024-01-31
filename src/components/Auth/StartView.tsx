@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-// import "./StartView.css"; // Import your CSS file
+import { useState } from "react";
+import "./StartView.css";
 
 const StartView = () => {
   const [isLoginPresented, setIsLoginPresented] = useState(false);
@@ -11,14 +11,13 @@ const StartView = () => {
   return (
     <div className="container">
       <div className="toolbar">
-        <h1 className="logo">TTwin</h1>
+        <img
+          className="logo"
+          src={new URL("./Assets/appIcon.png", import.meta.url).href}
+          alt="Paragliding scene"
+        />
       </div>
-      <h2 className="title">See what's happening in the paragliding world.</h2>
-      <img
-        className="image"
-        src="/startImage.png" // Replace with your image path
-        alt="Paragliding scene"
-      />
+      <h2 className="title">See what's happening in the paragliding world</h2>
       <button className="create-account-button" onClick={handleSignUpPress}>
         Create account
       </button>
@@ -31,12 +30,12 @@ const StartView = () => {
           Login
         </button>
       </div>
-      {/* {isLoginPresented && (
-        <LogInView onClose={() => setIsLoginPresented(false)} />
-      )}
-      {isSignUpPresented && (
-        <SignUpView onClose={() => setIsSignUpPresented(false)} />
-      )} */}
+      {isLoginPresented &&
+        // <LogInView onClose={() => setIsLoginPresented(false)} />
+        "foo"}
+      {isSignUpPresented &&
+        // <SignUpView onClose={() => setIsSignUpPresented(false)} />
+        "bar"}
     </div>
   );
 };
