@@ -1,5 +1,5 @@
 import './App.css'
-import StartView from './components/Auth/StartView'
+import StartView from './components/auth/StartView'
 
 function App() {
 

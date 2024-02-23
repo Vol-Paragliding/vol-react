@@ -1,4 +1,6 @@
 import { useState } from "react";
+import LoginView from "./LoginView";
+import SignUpView from "./SignUpView";
 import "./StartView.css";
 
 const StartView = () => {
@@ -7,36 +9,45 @@ const StartView = () => {
 
   const handleLoginPress = () => setIsLoginPresented(true);
   const handleSignUpPress = () => setIsSignUpPresented(true);
+  const handleClose = () => {
+    setIsLoginPresented(false);
+    setIsSignUpPresented(false);
+  };
 
   return (
-    <div className="container">
-      <div className="toolbar">
+    <main className="container">
+      <header className="toolbar">
+        <h1 className="title">Discover the Paragliding World</h1>
         <img
           className="logo"
-          src={new URL("./Assets/appIcon.png", import.meta.url).href}
+          src={new URL("../../assets/appIcon.png", import.meta.url).href}
           alt="Paragliding scene"
         />
-      </div>
-      <h2 className="title">See what's happening in the paragliding world</h2>
-      <button className="create-account-button" onClick={handleSignUpPress}>
-        Create account
-      </button>
-      <div className="or-separator">
-        <span>or</span>
-      </div>
-      <div className="login-row">
-        <p className="login-text">Have an account already?</p>
-        <button className="login-button" onClick={handleLoginPress}>
-          Login
-        </button>
-      </div>
-      {isLoginPresented &&
-        // <LogInView onClose={() => setIsLoginPresented(false)} />
-        "foo"}
-      {isSignUpPresented &&
-        // <SignUpView onClose={() => setIsSignUpPresented(false)} />
-        "bar"}
-    </div>
+      </header>
+      <section className="content">
+        <div className="action-container">
+          {!isLoginPresented && !isSignUpPresented && (
+            <>
+              <button
+                className="action-button create-account"
+                onClick={handleSignUpPress}
+              >
+                Create Account
+              </button>
+              <div className="separator">or</div>
+              <button
+                className="action-button login"
+                onClick={handleLoginPress}
+              >
+                Log In
+              </button>
+            </>
+          )}
+        </div>
+        {isLoginPresented && <LoginView onClose={handleClose} />}
+        {isSignUpPresented && <SignUpView onClose={handleClose} />}
+      </section>
+    </main>
   );
 };
 
