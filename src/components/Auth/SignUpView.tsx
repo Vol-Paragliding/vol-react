@@ -1,7 +1,14 @@
 import React, { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 import "./auth.css";
 
-const SignUpView = ({ onClose }: { onClose: React.MouseEventHandler<HTMLButtonElement> | undefined }) => {
+const SignUpView = ({
+  onClose,
+}: {
+  onClose: React.MouseEventHandler<HTMLButtonElement> | undefined;
+}) => {
+  const { setAuthDetails } = useAuth();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstname, setFirstname] = useState("");
@@ -25,6 +32,7 @@ const SignUpView = ({ onClose }: { onClose: React.MouseEventHandler<HTMLButtonEl
       if (response.status !== 200) {
         throw new Error(data.message || "Error signing up");
       }
+      setAuthDetails(data);
     } catch (error) {
       setError((error as Error).message || "An error occurred during sign up.");
     }

@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 import "./auth.css";
 
 const LogInView = ({ onClose }: { onClose: React.MouseEventHandler }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { setAuthDetails } = useAuth();
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,9 +23,8 @@ const LogInView = ({ onClose }: { onClose: React.MouseEventHandler }) => {
 
       const data = await response.json();
       if (response.ok) {
-        // Assuming login success includes redirect or storing authentication details
         console.log("Login successful", data);
-        // Redirect user or update application state here
+        setAuthDetails(data);
       } else {
         throw new Error(data.message || "Failed to log in");
       }

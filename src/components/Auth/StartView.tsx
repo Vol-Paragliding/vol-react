@@ -21,7 +21,7 @@ const StartView = () => {
         <img
           className="logo"
           src={new URL("../../assets/appIcon.png", import.meta.url).href}
-          alt="Paragliding scene"
+          alt="Paragliding logo"
         />
       </header>
       <section className="content">
