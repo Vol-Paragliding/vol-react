@@ -22,13 +22,6 @@ export interface UserReference {
   username: string;
 }
 
-export interface AuthUser {
-  feedToken: string;
-  chatToken: string;
-  username: string;
-  userId: string;
-}
-
 export interface LoginCredential {
   username: string;
   password: string;

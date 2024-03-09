@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/auth/useAuth";
+import { signup } from "../../contexts/auth/AuthSlice";
 import "./auth.css";
 
-const SignUpView = ({
-  onClose,
-}: {
+type SignUpViewProps = {
+  navigate: (path: string) => void;
   onClose: React.MouseEventHandler<HTMLButtonElement> | undefined;
-}) => {
-  const { setAuthDetails } = useAuth();
+};
+
+const SignUpView = ({
+  navigate,
+  onClose,
+}: SignUpViewProps) => {
+  const { dispatch } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -20,19 +25,10 @@ const SignUpView = ({
     setError("");
 
     try {
-      const response = await fetch("http://localhost:8080/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password, firstname, lastname }),
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw new Error(data.message || "Error signing up");
-      }
-      setAuthDetails(data);
+      const user = await signup({ username, password });
+      console.log("Sign up successful", user);
+      dispatch({ type: "SET_USER", payload: user });
+      navigate("/dashboard");
     } catch (error) {
       setError((error as Error).message || "An error occurred during sign up.");
     }

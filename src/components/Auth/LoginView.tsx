@@ -1,36 +1,33 @@
 import { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/auth/useAuth";
+import { login } from "../../contexts/auth/AuthSlice";
 import "./auth.css";
 
-const LogInView = ({ onClose }: { onClose: React.MouseEventHandler }) => {
+import React from "react";
+
+type LogInViewProps = {
+  navigate: (path: string) => void;
+  onClose: React.MouseEventHandler;
+};
+
+const LogInView = ({ navigate, onClose }: LogInViewProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { setAuthDetails } = useAuth();
+  const { dispatch } = useAuth();
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
 
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        console.log("Login successful", data);
-        setAuthDetails(data);
-      } else {
-        throw new Error(data.message || "Failed to log in");
-      }
-    } catch (err) {
-      console.error("Login Error:", err);
-      setError((err as Error).message || "An error occurred during login.");
+      const user = await login({ username, password });
+      console.log("Login successful", user);
+      dispatch({ type: "SET_USER", payload: user });
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login Error:", error);
+      setError((error as Error).message || "An error occurred during login.");
     }
   };
 

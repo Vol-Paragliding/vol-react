@@ -1,9 +1,14 @@
 import { useState } from "react";
 import LoginView from "./LoginView";
 import SignUpView from "./SignUpView";
+import appIcon from "../../assets/appIcon.png";
 import "./StartView.css";
 
-const StartView = () => {
+type StartViewProps = {
+  navigate: (path: string) => void;
+};
+
+const StartView = ({ navigate }: StartViewProps) => {
   const [isLoginPresented, setIsLoginPresented] = useState(false);
   const [isSignUpPresented, setIsSignUpPresented] = useState(false);
 
@@ -18,11 +23,7 @@ const StartView = () => {
     <main className="container">
       <header className="toolbar">
         <h1 className="title">Discover the Paragliding World</h1>
-        <img
-          className="logo"
-          src={new URL("../../assets/appIcon.png", import.meta.url).href}
-          alt="Paragliding logo"
-        />
+        <img className="logo" src={appIcon} alt="Paragliding logo" />
       </header>
       <section className="content">
         <div className="action-container">
@@ -44,8 +45,12 @@ const StartView = () => {
             </>
           )}
         </div>
-        {isLoginPresented && <LoginView onClose={handleClose} />}
-        {isSignUpPresented && <SignUpView onClose={handleClose} />}
+        {isLoginPresented && (
+          <LoginView navigate={navigate} onClose={handleClose} />
+        )}
+        {isSignUpPresented && (
+          <SignUpView navigate={navigate} onClose={handleClose} />
+        )}
       </section>
     </main>
   );
