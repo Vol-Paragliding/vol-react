@@ -9,11 +9,11 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #ffffff;
   align-items: center;
-  justify-content: space-evenly;
   text-align: center;
-  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #e9ecef;
 }
 
 .toolbar {
@@ -22,6 +22,7 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 2rem;
+  margin: 0;
 }
 
 .content {
@@ -37,9 +38,7 @@
 }
 
 .action-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-top: 2rem;
 }
 
 .action-button {

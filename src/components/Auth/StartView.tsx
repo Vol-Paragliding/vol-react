@@ -26,25 +26,20 @@ const StartView = ({ navigate }: StartViewProps) => {
         <img className="logo" src={appIcon} alt="Paragliding logo" />
       </header>
       <section className="content">
-        <div className="action-container">
-          {!isLoginPresented && !isSignUpPresented && (
-            <>
-              <button
-                className="action-button create-account"
-                onClick={handleSignUpPress}
-              >
-                Create Account
-              </button>
-              <div className="separator">or</div>
-              <button
-                className="action-button login"
-                onClick={handleLoginPress}
-              >
-                Log In
-              </button>
-            </>
-          )}
-        </div>
+        {!isLoginPresented && !isSignUpPresented && (
+          <div className="action-container">
+            <button
+              className="action-button create-account"
+              onClick={handleSignUpPress}
+            >
+              Create Account
+            </button>
+            <div className="separator">or</div>
+            <button className="action-button login" onClick={handleLoginPress}>
+              Log In
+            </button>
+          </div>
+        )}
         {isLoginPresented && (
           <LoginView navigate={navigate} onClose={handleClose} />
         )}
