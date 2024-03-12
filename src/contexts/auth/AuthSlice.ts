@@ -4,7 +4,9 @@ import User from "../../interfaces/types";
 type AuthAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_USER'; payload: User | null }
-  | { type: 'SET_ERROR'; payload: string | null };
+  | { type: 'SET_ERROR'; payload: string | null }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | { type: 'SET_FEED_DATA'; payload: any }; // Adjust the payload type based on data structure
 
 type AuthState = {
   user: User | null;
@@ -27,6 +29,8 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
       return { ...state, user: action.payload };
     case "SET_ERROR":
       return { ...state, error: action.payload };
+    case "SET_FEED_DATA":
+      return { ...state, feedData: action.payload };
     default:
       return state;
   }

@@ -1,25 +1,18 @@
 enum ActorType {
-  SA = "SA",
-  SR = "SR",
-  SO = "SO",
-  SU = "SU",
+  SA = "SA", // Stream activity
+  SR = "SR", // Stream reaction
+  SO = "SO", // Stream object for a collection
+  SU = "SU"  // Stream User
 }
 
 interface Refable {
   ref(): string;
 }
 
-export class FeedActor implements Refable {
-  type: ActorType;
-  id: string;
+const createFeedActor = (type: ActorType, id: string): Refable => {
+  return {
+    ref: () => `${type}${id}`,
+  };
+};
 
-  constructor(type: ActorType, id: string) {
-    this.type = type;
-    this.id = id;
-  }
-
-  ref(): string {
-    return this.type + this.id;
-  }
-}
-
+export { ActorType, createFeedActor };
