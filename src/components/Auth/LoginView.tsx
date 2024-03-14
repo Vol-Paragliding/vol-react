@@ -1,10 +1,6 @@
-import React, { useState } from "react";
-
-import { sanitizeInput } from "../utils";
-
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../contexts/auth/useAuth";
 import { login } from "../../contexts/auth/AuthSlice";
-
 import appIcon from "../../assets/appIcon.png";
 import "./auth.css";
 
@@ -19,13 +15,20 @@ const LogInView = ({ navigate, onClose }: LogInViewProps) => {
   const [error, setError] = useState("");
   const { dispatch } = useAuth();
 
+  const usernameRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (usernameRef.current) {
+      usernameRef.current.focus();
+    }
+  }, []);
+
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
 
     try {
-      const sanitizedUsername = sanitizeInput(username);
-      const user = await login({ username: sanitizedUsername, password });
+      const user = await login({ username, password });
       console.log("Login successful", user);
       dispatch({ type: "SET_USER", payload: user });
       navigate("/dashboard");
@@ -50,11 +53,14 @@ const LogInView = ({ navigate, onClose }: LogInViewProps) => {
           </div>
           <div className="input-group">
             <input
+              ref={usernameRef}
               type="text"
               placeholder="Your username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               autoComplete="username"
+              pattern="^[a-zA-Z0-9_.\-]{3,30}$"
+              title="Username must be 3-30 characters and can include letters, numbers, underscores, hyphens, and periods."
               required
             />
           </div>

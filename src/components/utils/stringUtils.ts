@@ -1,8 +1,8 @@
-export const sanitizeInput = (input: string): string => {
+export const sanitizeInput = (input: string): { sanitized: string; error: string } => {
   const trimmedInput = input.trim();
   const allowedChars = /^[a-zA-Z0-9_.-]+$/;
   if (!allowedChars.test(trimmedInput)) {
-    throw new Error("Input contains invalid characters.");
+    return { sanitized: "", error: "Input contains invalid characters." };
   }
-  return trimmedInput;
+  return { sanitized: trimmedInput, error: "" };
 };

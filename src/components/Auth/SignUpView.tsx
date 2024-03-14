@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import { sanitizeInput } from "../utils";
-
 import { useAuth } from "../../contexts/auth/useAuth";
 import { signup } from "../../contexts/auth/AuthSlice";
-
 import appIcon from "../../assets/appIcon.png";
 import "./auth.css";
 
@@ -19,12 +17,27 @@ const SignUpView = ({ navigate, onClose }: SignUpViewProps) => {
   const [error, setError] = useState("");
   const { dispatch } = useAuth();
 
+  const usernameRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (usernameRef.current) {
+      usernameRef.current.focus();
+    }
+  }, []);
+
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
 
+    const { sanitized: sanitizedUsername, error: usernameValidationError } =
+      sanitizeInput(username);
+
+    if (usernameValidationError) {
+      setError(usernameValidationError);
+      return;
+    }
+
     try {
-      const sanitizedUsername = sanitizeInput(username);
       const user = await signup({
         username: sanitizedUsername.toLowerCase(),
         password,
@@ -47,16 +60,19 @@ const SignUpView = ({ navigate, onClose }: SignUpViewProps) => {
       <h1 className="form-title">Sign up</h1>
       <div className="credentials-form">
         <form onSubmit={handleSignUp}>
-          {error && <div className="signup-error">{error}</div>}
           <div className="form-header">
             <h2>Create your account</h2>
           </div>
+          {error && <div className="signup-error">{error}</div>}
           <div className="input-group">
             <input
+              ref={usernameRef}
               type="text"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              pattern="^[a-zA-Z0-9_.\-]{3,30}$"
+              title="Username must be 3-30 characters and can include letters, numbers, underscores, hyphens, and periods."
               required
             />
           </div>
@@ -66,6 +82,8 @@ const SignUpView = ({ navigate, onClose }: SignUpViewProps) => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              pattern=".{8,}"
+              title="Password must be at least 8 characters long."
               required
             />
           </div>

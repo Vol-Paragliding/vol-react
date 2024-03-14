@@ -7,7 +7,7 @@
   margin: auto;
   position: relative;
   width: 400px;
-  height: 452px;
+  min-height: 452px;
 }
 
 .form-title {
@@ -132,4 +132,9 @@ input[type="password"]::placeholder {
 
 .close-button:hover {
   color: #7b6b6b;
+}
+
+.signup-error {
+  color: #ff0000;
+  margin-bottom: 1rem;
 }

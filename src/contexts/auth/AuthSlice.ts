@@ -65,7 +65,11 @@ export async function signup({ username, password }: { username: string; passwor
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Failed to sign up");
+    if (data.message && data.message.code === "SQLITE_CONSTRAINT") {
+      throw new Error("Username already exists. Please choose a different one.");
+    } else {
+      throw new Error(data.message || "Failed to sign up");
+    }
   }
 
   return data;
