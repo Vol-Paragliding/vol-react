@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useEffect } from "react";
 import { AuthAction, AuthState, initialState, authReducer } from "./AuthSlice";
 
 export const AuthContext = createContext<{
@@ -6,7 +6,7 @@ export const AuthContext = createContext<{
   dispatch: React.Dispatch<AuthAction>;
 }>({
   state: initialState,
-  dispatch: () => {},
+  dispatch: () => null,
 });
 
 interface AuthProviderProps {
@@ -14,12 +14,24 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, initialState);
+  const [state, dispatch] = useReducer(authReducer, initialState, () => {
+    const storedUser = sessionStorage.getItem("authUser");
+    return storedUser
+      ? { ...initialState, user: JSON.parse(storedUser) }
+      : initialState;
+  });
+
+  useEffect(() => {
+    if (state.user) {
+      sessionStorage.setItem("authUser", JSON.stringify(state.user));
+    } else {
+      sessionStorage.removeItem("authUser");
+    }
+  }, [state.user]);
+
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-export default AuthContext;

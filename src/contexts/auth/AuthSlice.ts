@@ -1,19 +1,18 @@
 import { API_ENDPOINT } from "../../config";
-import User from "../../interfaces/types";
+import AuthUser from "../../interfaces/types";
 
 type AuthAction =
   | { type: 'SET_LOADING'; payload: boolean }
-  | { type: 'SET_USER'; payload: User | null }
+  | { type: 'SET_USER'; payload: AuthUser | null }
   | { type: 'SET_ERROR'; payload: string | null }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   | { type: 'SET_FEED_DATA'; payload: any }; // Adjust the payload type based on data structure
 
 type AuthState = {
-  user: User | null;
+  user: AuthUser | null;
   loading: boolean;
   error: string | null;
 };
-
 
 export const initialState: AuthState = {
   user: null,
@@ -36,7 +35,7 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
   }
 };
 
-export async function login({ username, password }: { username: string; password: string }): Promise<User> {
+export async function login({ username, password }: { username: string; password: string }): Promise<AuthUser> {
   const response = await fetch(`${API_ENDPOINT}/auth/login`, {
     method: "POST",
     headers: {
@@ -54,7 +53,7 @@ export async function login({ username, password }: { username: string; password
   return data;
 }
 
-export async function signup({ username, password }: { username: string; password: string; }): Promise<User> {
+export async function signup({ username, password }: { username: string; password: string; }): Promise<AuthUser> {
   const response = await fetch(`${API_ENDPOINT}/auth/signup`, {
     method: "POST",
     headers: {
@@ -70,6 +69,11 @@ export async function signup({ username, password }: { username: string; passwor
   }
 
   return data;
+}
+
+export function logout(dispatch: React.Dispatch<AuthAction>) {
+  dispatch({ type: "SET_USER", payload: null });
+  sessionStorage.removeItem("authUser");
 }
 
 export type { AuthAction, AuthState };

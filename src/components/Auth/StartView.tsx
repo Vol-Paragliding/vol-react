@@ -21,23 +21,29 @@ const StartView = ({ navigate }: StartViewProps) => {
 
   return (
     <main className="container">
-      <header className="toolbar">
-        <h1 className="title">Discover the Paragliding World</h1>
-        <img className="logo" src={appIcon} alt="Paragliding logo" />
-      </header>
       <section className="content">
         {!isLoginPresented && !isSignUpPresented && (
-          <div className="action-container">
-            <button
-              className="action-button create-account"
-              onClick={handleSignUpPress}
-            >
-              Create Account
-            </button>
-            <div className="separator">or</div>
-            <button className="action-button login" onClick={handleLoginPress}>
-              Log In
-            </button>
+          <div className="form-container">
+            <img className="logo" src={appIcon} alt="Paragliding logo" />
+            <h1 className="form-title">Explore the paragliding world</h1>
+            <div className="form-header">
+              <h2>Join or sign back in</h2>
+            </div>
+            <div className="action-container">
+              <button
+                className="action-button create-account"
+                onClick={handleSignUpPress}
+              >
+                Create Account
+              </button>
+              <div className="separator">or</div>
+              <button
+                className="action-button login"
+                onClick={handleLoginPress}
+              >
+                Log In
+              </button>
+            </div>
           </div>
         )}
         {isLoginPresented && (

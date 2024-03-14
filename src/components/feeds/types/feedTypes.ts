@@ -7,8 +7,8 @@ export interface FeedUser {
   updatedAt: Date;
   aboutMe: string;
   profilePicture?: string;
-  website: string;
-  location: string;
+  website?: string;
+  location?: string;
 }
 
 export interface ReactionCounts {
@@ -23,6 +23,17 @@ export interface PostActivity {
   tweetPhoto?: string;
   tweetMovieAssetId?: string;
   tweetMoviePlaybackId?: string;
+}
+
+export interface PostActivityResponse {
+  actor: string;
+  verb: string;
+  duration: string;
+  foreign_id: string;
+  id: string;
+  object: string;
+  origin: string;
+  target: string;
 }
 
 export interface EnrichedPostActivity {

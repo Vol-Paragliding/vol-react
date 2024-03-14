@@ -1,9 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
+
+import { sanitizeInput } from "../utils";
+
 import { useAuth } from "../../contexts/auth/useAuth";
 import { login } from "../../contexts/auth/AuthSlice";
-import "./auth.css";
 
-import React from "react";
+import appIcon from "../../assets/appIcon.png";
+import "./auth.css";
 
 type LogInViewProps = {
   navigate: (path: string) => void;
@@ -21,7 +24,8 @@ const LogInView = ({ navigate, onClose }: LogInViewProps) => {
     setError("");
 
     try {
-      const user = await login({ username, password });
+      const sanitizedUsername = sanitizeInput(username);
+      const user = await login({ username: sanitizedUsername, password });
       console.log("Login successful", user);
       dispatch({ type: "SET_USER", payload: user });
       navigate("/dashboard");
@@ -36,12 +40,13 @@ const LogInView = ({ navigate, onClose }: LogInViewProps) => {
       <button className="close-button" onClick={onClose}>
         &times;
       </button>
+      <img className="logo" src={appIcon} alt="Paragliding logo" />
       <h1 className="form-title">Log in</h1>
       <div className="credentials-form">
         <form onSubmit={handleLogin}>
           {error && <div className="signup-error">{error}</div>}
           <div className="form-header">
-            <h2>Please enter your login credentials</h2>
+            <h2>Enter your login credentials</h2>
           </div>
           <div className="input-group">
             <input
@@ -63,14 +68,9 @@ const LogInView = ({ navigate, onClose }: LogInViewProps) => {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="submit-button"
-            disabled={!username || !password}
-          >
+          <button type="submit" className="submit-button">
             Log In
           </button>
-          {error && <p className="error">{error}</p>}
         </form>
       </div>
     </div>

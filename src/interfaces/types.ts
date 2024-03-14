@@ -1,8 +1,8 @@
-type User = {
+type AuthUser = {
   chatToken: string;
   feedToken: string;
   userId: string;
   username: string;
 };
 
-export default User;
+export default AuthUser;
