@@ -7,22 +7,22 @@ import styles from "./Profile.module.css";
 
 interface EditProfileViewProps {
   authUser: AuthUser | null;
-  currentUser: FeedUser | null;
+  feedUser: FeedUser | null;
   setShowEditProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setFeedUser: React.Dispatch<React.SetStateAction<FeedUser | null>>;
 }
 
 export const EditProfileView: React.FC<EditProfileViewProps> = ({
   authUser,
-  currentUser,
+  feedUser,
   setShowEditProfile,
   setFeedUser,
 }) => {
   const [userData, setUserData] = useState<UserData>({
-    firstname: currentUser?.data.firstname || "",
-    lastname: currentUser?.data.lastname || "",
-    aboutMe: currentUser?.data.aboutMe || "",
-    location: currentUser?.data.location || "",
+    firstname: feedUser?.data.firstname || "",
+    lastname: feedUser?.data.lastname || "",
+    aboutMe: feedUser?.data.aboutMe || "",
+    location: feedUser?.data.location || "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 

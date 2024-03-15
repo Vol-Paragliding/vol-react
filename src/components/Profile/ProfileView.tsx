@@ -3,15 +3,17 @@ import { FeedUser } from "../feeds/types/feedTypes";
 import styles from "./Profile.module.css";
 
 interface ProfileViewProps {
-  currentUser: FeedUser | null;
-  onEdit: (mode: string) => void;
+  feedUser: FeedUser | null;
+  edit: (mode: string) => void;
+  logout: () => void;
 }
 
 export const ProfileView: React.FC<ProfileViewProps> = ({
-  currentUser,
-  onEdit,
+  feedUser,
+  edit,
+  logout,
 }) => {
-  if (!currentUser) {
+  if (!feedUser) {
     return <div>Loading user information...</div>;
   }
 
@@ -19,30 +21,33 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
     <div className={styles.profileContainer}>
       <div className={styles.profileDetail}>
         <span className={styles.profileDetailLabel}>First Name:</span>
-        {currentUser.data.firstname}
+        {feedUser.data.firstname}
       </div>
       <div className={styles.profileDetail}>
         <span className={styles.profileDetailLabel}>Last Name:</span>
-        {currentUser.data.lastname}
+        {feedUser.data.lastname}
       </div>
       <div className={styles.profileDetail}>
         <span className={styles.profileDetailLabel}>Bio:</span>
-        {currentUser.data.aboutMe}
+        {feedUser.data.aboutMe}
       </div>
       <div className={styles.profileDetail}>
         <span className={styles.profileDetailLabel}>Location:</span>
-        {currentUser.data.location}
+        {feedUser.data.location}
       </div>
       <div className={styles.profileDetail}>
         <span className={styles.profileDetailLabel}>Website:</span>
-        {currentUser.data.website}
+        {feedUser.data.website}
       </div>
       <div>
-        <button className={styles.editButton} onClick={() => onEdit('edit')}>
-          Edit Profile
+        <button className={styles.editButton} onClick={() => edit("edit")}>
+          Edit
         </button>
-        <button className={styles.editButton} onClick={() => onEdit('')}>
-          Done
+        <button className={styles.editButton} onClick={() => edit("")}>
+          Close
+        </button>
+        <button className={styles.editButton} onClick={logout}>
+          Log out
         </button>
       </div>
     </div>

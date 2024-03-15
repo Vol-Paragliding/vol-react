@@ -40,19 +40,16 @@ const DashboardView = () => {
       />
       {/* <ForYouFeedsView feedType="user" userId={state.user.userId} /> */}
       {viewMode === "profile" && (
-        <ProfileView currentUser={feedUser} onEdit={setViewMode} />
+        <ProfileView feedUser={feedUser} edit={setViewMode} logout={handleLogout} />
       )}
       {viewMode === "edit" && (
         <EditProfileView
-          currentUser={feedUser}
+          feedUser={feedUser}
           authUser={state.user}
           setShowEditProfile={() => setViewMode("profile")}
           setFeedUser={setFeedUser}
         />
       )}
-      <button className="logout-button" onClick={handleLogout}>
-        Log out
-      </button>
     </div>
   );
 };
