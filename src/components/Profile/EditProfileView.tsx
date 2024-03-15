@@ -6,7 +6,7 @@ import { updateUser, uploadImage } from "../feeds/services/FeedService";
 import styles from "./Profile.module.css";
 
 interface EditProfileViewProps {
-  authUser: AuthUser;
+  authUser: AuthUser | null;
   currentUser: FeedUser | null;
   setShowEditProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setFeedUser: React.Dispatch<React.SetStateAction<FeedUser | null>>;
@@ -50,7 +50,7 @@ export const EditProfileView: React.FC<EditProfileViewProps> = ({
           fileName,
           mimeType,
           selectedFile,
-          authUser.feedToken
+          authUser?.feedToken || ""
         );
 
         return uploadedImageUrl.toString();
@@ -70,8 +70,8 @@ export const EditProfileView: React.FC<EditProfileViewProps> = ({
           const updatedUserData = { ...userData, profilePicture: imageUrl };
           const updatedUser = await updateUser(
             updatedUserData,
-            authUser.userId,
-            authUser.feedToken
+            authUser?.userId || "",
+            authUser?.feedToken || ""
           );
           setFeedUser(updatedUser);
           setShowEditProfile(false);

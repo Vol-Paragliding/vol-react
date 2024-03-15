@@ -4,7 +4,7 @@ import styles from "./Profile.module.css";
 
 interface ProfileViewProps {
   currentUser: FeedUser | null;
-  onEdit: () => void;
+  onEdit: (mode: string) => void;
 }
 
 export const ProfileView: React.FC<ProfileViewProps> = ({
@@ -37,9 +37,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         <span className={styles.profileDetailLabel}>Website:</span>
         {currentUser.data.website}
       </div>
-      <button className={styles.editButton} onClick={onEdit}>
-        Edit Profile
-      </button>
+      <div>
+        <button className={styles.editButton} onClick={() => onEdit('edit')}>
+          Edit Profile
+        </button>
+        <button className={styles.editButton} onClick={() => onEdit('')}>
+          Done
+        </button>
+      </div>
     </div>
   );
 };

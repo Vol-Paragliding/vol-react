@@ -8,52 +8,45 @@ import { EditProfileView, ProfileImage, ProfileView } from "../Profile";
 
 const DashboardView = () => {
   const [feedUser, setFeedUser] = useState<FeedUser | null>(null);
-  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [viewMode, setViewMode] = useState(""); // Can be 'profile' or 'edit'
   const { state, dispatch } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      if (state.user) {
+    if (!state.user) {
+      navigate("/");
+    } else {
+      const fetchUser = async () => {
+        if (!state.user) return;
+
         const user = await getUser(state.user.userId, state.user.feedToken);
         setFeedUser(user);
-      }
-    };
+      };
 
-    fetchUser();
-  }, [state.user]);
+      fetchUser();
+    }
+  }, [state.user, navigate]);
 
   const handleLogout = () => {
     logout(dispatch);
     navigate("/");
   };
 
-  const handleEditProfile = () => {
-    setShowEditProfile((toggle) => !toggle);
-  };
-
-  if (!state.user) {
-    navigate("/");
-    return <div>Loading...</div>;
-  }
-
   return (
     <div>
       <ProfileImage
         imageUrl={feedUser?.data.profilePicture}
-        action={handleEditProfile}
+        action={() => setViewMode(viewMode === "profile" ? "" : "profile")}
       />
-      <h1>
-        Welcome to the Dashboard,{" "}
-        {feedUser?.data.firstname || state.user.username}!
-      </h1>
-      <ProfileView currentUser={feedUser} onEdit={() => setShowEditProfile(true)} />
       {/* <ForYouFeedsView feedType="user" userId={state.user.userId} /> */}
-      {showEditProfile && (
+      {viewMode === "profile" && (
+        <ProfileView currentUser={feedUser} onEdit={setViewMode} />
+      )}
+      {viewMode === "edit" && (
         <EditProfileView
           currentUser={feedUser}
           authUser={state.user}
-          setShowEditProfile={setShowEditProfile}
+          setShowEditProfile={() => setViewMode("profile")}
           setFeedUser={setFeedUser}
         />
       )}
