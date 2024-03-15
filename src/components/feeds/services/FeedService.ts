@@ -32,8 +32,26 @@ export const getUser = async (userId: string, feedToken: string) => {
   return data;
 };
 
-export const updateUser = async (user: FeedUser, userId: string, feedToken: string) => {
+export interface UserData {
+  firstname: string;
+  lastname: string;
+  aboutMe: string;
+  location: string;
+  profilePicture?: string;
+}
+
+export const updateUser = async (userData: UserData, userId: string, feedToken: string) => {
   const url = getUserUrl(BASE_URLS.usEast, userId);
+
+  const requestBody = {
+    data: {
+      firstname: userData.firstname,
+      lastname: userData.lastname,
+      aboutMe: userData.aboutMe,
+      location: userData.location,
+      profilePicture: userData.profilePicture,
+    },
+  };
 
   const response = await fetch(url, {
     method: 'PUT',
@@ -42,7 +60,7 @@ export const updateUser = async (user: FeedUser, userId: string, feedToken: stri
       'Stream-Auth-Type': 'jwt',
       'Authorization': feedToken,
     },
-    body: JSON.stringify(user),
+    body: JSON.stringify(requestBody),
   });
 
   if (!response.ok) {

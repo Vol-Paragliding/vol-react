@@ -42,7 +42,7 @@ const SignUpView = ({ navigate, onClose }: SignUpViewProps) => {
         username: sanitizedUsername.toLowerCase(),
         password,
       });
-      console.log("Sign up successful", user);
+
       dispatch({ type: "SET_USER", payload: user });
       navigate("/dashboard");
     } catch (error) {

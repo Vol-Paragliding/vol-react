@@ -1,14 +1,16 @@
 export interface FeedUser {
-  userId: string;
-  firstname: string;
-  lastname: string;
-  username: string;
+  id: string;
   createdAt: Date;
   updatedAt: Date;
-  aboutMe: string;
-  profilePicture?: string;
-  website?: string;
-  location?: string;
+  data: {
+    firstname: string;
+    lastname: string;
+    username: string;
+    aboutMe: string;
+    profilePicture?: string;
+    website?: string;
+    location?: string;
+  }
 }
 
 export interface ReactionCounts {

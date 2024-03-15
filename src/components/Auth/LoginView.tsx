@@ -29,7 +29,7 @@ const LogInView = ({ navigate, onClose }: LogInViewProps) => {
 
     try {
       const user = await login({ username, password });
-      console.log("Login successful", user);
+
       dispatch({ type: "SET_USER", payload: user });
       navigate("/dashboard");
     } catch (error) {

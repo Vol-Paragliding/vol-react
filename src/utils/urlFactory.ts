@@ -4,7 +4,7 @@ export const BASE_URLS = {
   singapore: "https://singapore-api.stream-io-api.com/api/v1.0/",
 };
 
-const appendApiKey = (url: string): string => `${url}?api_key=${process.env.REACT_APP_API_KEY}`;
+const appendApiKey = (url: string): string => `${url}?api_key=${import.meta.env.VITE_REACT_APP_API_KEY}`;
 
 export const getImagesUrl = (baseUrl: string): string => appendApiKey(`${baseUrl}images`);
 
