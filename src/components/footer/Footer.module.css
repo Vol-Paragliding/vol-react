@@ -1,0 +1,28 @@
+.iconLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #333;
+  padding: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.iconLink:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.label {
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+.tabContainer {
+  display: flex;
+  justify-content: space-around;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 5px 0;
+}

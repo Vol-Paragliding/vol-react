@@ -1,14 +1,11 @@
 import { useState } from "react";
+
 import LoginView from "./LoginView";
 import SignUpView from "./SignUpView";
 import appIcon from "../../assets/appIcon.png";
 import "./StartView.css";
 
-type StartViewProps = {
-  navigate: (path: string) => void;
-};
-
-const StartView = ({ navigate }: StartViewProps) => {
+const StartView = () => {
   const [isLoginPresented, setIsLoginPresented] = useState(false);
   const [isSignUpPresented, setIsSignUpPresented] = useState(false);
 
@@ -47,10 +44,10 @@ const StartView = ({ navigate }: StartViewProps) => {
           </div>
         )}
         {isLoginPresented && (
-          <LoginView navigate={navigate} onClose={handleClose} />
+          <LoginView onClose={handleClose} />
         )}
         {isSignUpPresented && (
-          <SignUpView navigate={navigate} onClose={handleClose} />
+          <SignUpView onClose={handleClose} />
         )}
       </section>
     </main>

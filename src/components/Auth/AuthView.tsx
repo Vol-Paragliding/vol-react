@@ -1,15 +1,21 @@
+import { useEffect } from "react";
+
 import { useAuth } from "../../contexts/auth/useAuth";
 import { useNavigate } from "react-router-dom";
-import StartView from "./StartView";
-import HomeView from "../home/HomeView";
 
 const AuthView = () => {
   const { state } = useAuth();
   const navigate = useNavigate();
 
-  return (
-    <>{!state.autUser ? <StartView navigate={navigate} /> : <HomeView />}</>
-  );
+  useEffect(() => {
+    if (state.authUser) {
+      navigate("/home");
+    } else {
+      navigate("/");
+    }
+  }, [state.authUser, navigate]);
+
+  return null;
 };
 
 export default AuthView;

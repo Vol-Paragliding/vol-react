@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { sanitizeInput } from "../utils";
 import { useAuth } from "../../contexts/auth/useAuth";
@@ -7,15 +8,15 @@ import appIcon from "../../assets/appIcon.png";
 import "./auth.css";
 
 type SignUpViewProps = {
-  navigate: (path: string) => void;
   onClose: React.MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
-const SignUpView = ({ navigate, onClose }: SignUpViewProps) => {
+const SignUpView = ({ onClose }: SignUpViewProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { dispatch } = useAuth();
+  const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>(null);
 

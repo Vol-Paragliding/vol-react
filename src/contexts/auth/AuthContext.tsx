@@ -17,17 +17,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState, () => {
     const storedUser = sessionStorage.getItem("authUser");
     return storedUser
-      ? { ...initialState, user: JSON.parse(storedUser) }
+      ? { ...initialState, authUser: JSON.parse(storedUser) }
       : initialState;
   });
 
   useEffect(() => {
-    if (state.autUser) {
-      sessionStorage.setItem("authUser", JSON.stringify(state.autUser));
+    if (state.authUser) {
+      sessionStorage.setItem("authUser", JSON.stringify(state.authUser));
     } else {
       sessionStorage.removeItem("authUser");
     }
-  }, [state.autUser]);
+  }, [state.authUser]);
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>

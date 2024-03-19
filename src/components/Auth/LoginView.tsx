@@ -1,19 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useAuth } from "../../contexts/auth/useAuth";
 import { login } from "../../contexts/auth/AuthSlice";
 import appIcon from "../../assets/appIcon.png";
 import "./auth.css";
 
 type LogInViewProps = {
-  navigate: (path: string) => void;
   onClose: React.MouseEventHandler;
 };
 
-const LogInView = ({ navigate, onClose }: LogInViewProps) => {
+const LogInView = ({ onClose }: LogInViewProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { dispatch } = useAuth();
+  const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>(null);
 

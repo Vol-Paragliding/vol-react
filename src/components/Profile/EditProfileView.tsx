@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { useAuth } from "../../contexts/auth/useAuth";
 import { useUserFeed } from "../../contexts/feed/useUserFeed";
 import { UserData } from "../feeds/services/FeedService";
@@ -41,7 +42,7 @@ export const EditProfileView = () => {
           fileName,
           mimeType,
           selectedFile,
-          state.autUser?.feedToken || ""
+          state.authUser?.feedToken || ""
         );
 
         return uploadedImageUrl.toString();
@@ -61,8 +62,8 @@ export const EditProfileView = () => {
           const updatedUserData = { ...userData, profilePicture: imageUrl };
           const updatedUser = await updateUser(
             updatedUserData,
-            state.autUser?.userId || "",
-            state.autUser?.feedToken || ""
+            state.authUser?.userId || "",
+            state.authUser?.feedToken || ""
           );
           setFeedUser(updatedUser);
           setViewMode("profile");
