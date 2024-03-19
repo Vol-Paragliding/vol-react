@@ -24,7 +24,7 @@ const StartView = () => {
             <img className="logo" src={appIcon} alt="Paragliding logo" />
             <h1 className="form-title">Explore the paragliding world</h1>
             <div className="form-header">
-              <h2>Join or sign back in</h2>
+              <h2>join or sign back in</h2>
             </div>
             <div className="action-container">
               <button
