@@ -9,13 +9,13 @@ type AuthAction =
   | { type: 'SET_FEED_DATA'; payload: any }; // Adjust the payload type based on data structure
 
 type AuthState = {
-  user: AuthUser | null;
+  autUser: AuthUser | null;
   loading: boolean;
   error: string | null;
 };
 
 export const initialState: AuthState = {
-  user: null,
+  autUser: null,
   loading: false,
   error: null,
 };
@@ -25,7 +25,7 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
     case "SET_LOADING":
       return { ...state, loading: action.payload };
     case "SET_USER":
-      return { ...state, user: action.payload };
+      return { ...state, autUser: action.payload };
     case "SET_ERROR":
       return { ...state, error: action.payload };
     case "SET_FEED_DATA":

@@ -1,23 +1,14 @@
 import React, { useState } from "react";
-import AuthUser from "../../interfaces/types";
-import { FeedUser } from "../feeds/types/feedTypes";
+import { useAuth } from "../../contexts/auth/useAuth";
+import { useUserFeed } from "../../contexts/feed/useUserFeed";
 import { UserData } from "../feeds/services/FeedService";
 import { updateUser, uploadImage } from "../feeds/services/FeedService";
 import styles from "./Profile.module.css";
 
-interface EditProfileViewProps {
-  authUser: AuthUser | null;
-  feedUser: FeedUser | null;
-  setShowEditProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  setFeedUser: React.Dispatch<React.SetStateAction<FeedUser | null>>;
-}
+export const EditProfileView = () => {
+  const { state } = useAuth();
+  const { feedUser, setFeedUser, setViewMode } = useUserFeed();
 
-export const EditProfileView: React.FC<EditProfileViewProps> = ({
-  authUser,
-  feedUser,
-  setShowEditProfile,
-  setFeedUser,
-}) => {
   const [userData, setUserData] = useState<UserData>({
     firstname: feedUser?.data.firstname || "",
     lastname: feedUser?.data.lastname || "",
@@ -50,7 +41,7 @@ export const EditProfileView: React.FC<EditProfileViewProps> = ({
           fileName,
           mimeType,
           selectedFile,
-          authUser?.feedToken || ""
+          state.autUser?.feedToken || ""
         );
 
         return uploadedImageUrl.toString();
@@ -70,11 +61,11 @@ export const EditProfileView: React.FC<EditProfileViewProps> = ({
           const updatedUserData = { ...userData, profilePicture: imageUrl };
           const updatedUser = await updateUser(
             updatedUserData,
-            authUser?.userId || "",
-            authUser?.feedToken || ""
+            state.autUser?.userId || "",
+            state.autUser?.feedToken || ""
           );
           setFeedUser(updatedUser);
-          setShowEditProfile(false);
+          setViewMode("profile");
         }
       } catch (error) {
         console.error("Error updating user: ", error);
@@ -138,7 +129,7 @@ export const EditProfileView: React.FC<EditProfileViewProps> = ({
         <button
           className="action-button"
           type="button"
-          onClick={() => setShowEditProfile(false)}
+          onClick={() => setViewMode("profile")}
         >
           Cancel
         </button>

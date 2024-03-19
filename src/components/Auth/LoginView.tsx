@@ -31,7 +31,7 @@ const LogInView = ({ navigate, onClose }: LogInViewProps) => {
       const user = await login({ username, password });
 
       dispatch({ type: "SET_USER", payload: user });
-      navigate("/dashboard");
+      navigate("/home");
     } catch (error) {
       console.error("Login Error:", error);
       setError((error as Error).message || "An error occurred during login.");

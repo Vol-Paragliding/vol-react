@@ -44,7 +44,7 @@ const SignUpView = ({ navigate, onClose }: SignUpViewProps) => {
       });
 
       dispatch({ type: "SET_USER", payload: user });
-      navigate("/dashboard");
+      navigate("/home");
     } catch (error) {
       console.error("Sign Up Error:", error);
       setError((error as Error).message || "An error occurred during sign up.");

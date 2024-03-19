@@ -10,7 +10,7 @@ export const AuthContext = createContext<{
 });
 
 interface AuthProviderProps {
-  children: React.ReactNode | React.ReactNodeArray;
+  children: React.ReactNode | React.ReactNode[];
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
@@ -22,12 +22,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   });
 
   useEffect(() => {
-    if (state.user) {
-      sessionStorage.setItem("authUser", JSON.stringify(state.user));
+    if (state.autUser) {
+      sessionStorage.setItem("authUser", JSON.stringify(state.autUser));
     } else {
       sessionStorage.removeItem("authUser");
     }
-  }, [state.user]);
+  }, [state.autUser]);
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>

@@ -8,7 +8,6 @@ export interface FeedUser {
     username: string;
     aboutMe: string;
     profilePicture?: string;
-    website?: string;
     location?: string;
   }
 }
