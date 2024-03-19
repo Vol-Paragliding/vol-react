@@ -7,6 +7,8 @@ import {
 import { useNavigate, Routes, Route } from "react-router-dom";
 
 import { useAuth } from "../../contexts/auth/useAuth";
+import { useUserFeed } from "../../contexts/feed/useUserFeed";
+import { ProfileView, EditProfileView } from "../profile";
 import styles from "./HomeView.module.css";
 
 const HeaderView = lazy(() => import("../header/HeaderView"));
@@ -18,6 +20,7 @@ const FooterView = lazy(() => import("../footer/FooterView"));
 
 const HomeView = () => {
   const { state } = useAuth();
+  const { viewMode } = useUserFeed();
   const navigate = useNavigate();
   // const [localState, dispatch] = useReducer(reducer, initialState);
   // const [isAddingPost, setIsAddingPost] = useState(false);
@@ -31,6 +34,8 @@ const HomeView = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <HeaderView />
+      {viewMode === "profile" && <ProfileView />}
+      {viewMode === "edit" && <EditProfileView />}
       <div className={styles.mainContent}>
         {/* {isAddingPost && <AddNewPostView />} */}
         {/* {localState.isAddingPost && <AddNewPostView />} */}

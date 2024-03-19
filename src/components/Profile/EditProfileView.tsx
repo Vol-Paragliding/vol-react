@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import { useAuth } from "../../contexts/auth/useAuth";
 import { useUserFeed } from "../../contexts/feed/useUserFeed";
@@ -8,7 +8,7 @@ import styles from "./Profile.module.css";
 
 export const EditProfileView = () => {
   const { state } = useAuth();
-  const { feedUser, setFeedUser, setViewMode } = useUserFeed();
+  const { feedUser, setFeedUser, setViewMode, viewMode } = useUserFeed();
 
   const [userData, setUserData] = useState<UserData>({
     firstname: feedUser?.data.firstname || "",
@@ -17,12 +17,19 @@ export const EditProfileView = () => {
     location: feedUser?.data.location || "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     field: keyof UserData
   ) => {
-    setUserData({ ...userData, [field]: e.target.value });
+    setUserData({ ...userData, [field]: event.target.value });
+  };
+
+  const handleImageContainerClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,16 +82,25 @@ export const EditProfileView = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={(e) => e.preventDefault()}>
+    <div className={`${viewMode === "edit" ? styles.slideIn : ""}`}>
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className={styles.profileContainer}
+      >
+        <h2 className={styles.profileHeader}>Edit profile</h2>
+        <hr className={styles.hr} />
         <div className={styles.profilePicInput}>
           <input
             className={styles.fileInput}
             type="file"
             onChange={handleFileChange}
             accept="image/*"
+            ref={fileInputRef}
           />
-          <div className={styles.profileImageContainer}>
+          <div
+            className={styles.profileImageContainer}
+            onClick={handleImageContainerClick}
+          >
             {userData.profilePicture ? (
               <img
                 src={userData.profilePicture.toString()}
@@ -92,43 +108,51 @@ export const EditProfileView = () => {
                 className={styles.profilePic}
               />
             ) : (
-              <p>Update your image</p>
+              <p className={styles.updateImage}>update image</p>
             )}
           </div>
         </div>
-        <div>
-          <label>Firstname</label>
+        <div className={styles.formField}>
+          <label className={styles.formLabel}>Firstname</label>
           <input
+            className={styles.formInput}
             value={userData.firstname}
             onChange={(e) => handleInputChange(e, "firstname")}
           />
         </div>
-        <div>
-          <label>Lastname</label>
+        <div className={styles.formField}>
+          <label className={styles.formLabel}>Lastname</label>
           <input
+            className={styles.formInput}
             value={userData.lastname}
             onChange={(e) => handleInputChange(e, "lastname")}
           />
         </div>
-        <div>
-          <label>Bio</label>
+        <div className={styles.formField}>
+          <label className={styles.formLabel}>Location</label>
           <input
-            value={userData.aboutMe}
-            onChange={(e) => handleInputChange(e, "aboutMe")}
-          />
-        </div>
-        <div>
-          <label>Location</label>
-          <input
+            className={styles.formInput}
             value={userData.location}
             onChange={(e) => handleInputChange(e, "location")}
           />
         </div>
-        <button className="submit-button" type="button" onClick={handleSubmit}>
+        <div className={styles.formField}>
+          <label className={styles.formLabel}>Bio</label>
+          <textarea
+            className={styles.formInput}
+            value={userData.aboutMe}
+            onChange={(e) => handleInputChange(e, "aboutMe")}
+          />
+        </div>
+        <button
+          className={`${styles.actionButton} ${styles.saveButton}`}
+          type="button"
+          onClick={handleSubmit}
+        >
           Save
         </button>
         <button
-          className="action-button"
+          className={`${styles.actionButton} ${styles.cancelButton}`}
           type="button"
           onClick={() => setViewMode("profile")}
         >

@@ -10,7 +10,7 @@ const HeaderView = () => {
     <div className={styles.header}>
       <div className={styles.profileImageContainer}>
         <ProfileImage />
-        {state.authUser && <p>{state.authUser.username}</p>}
+        {state.authUser && <p className={styles.username}>{state.authUser.username}</p>}
       </div>
       <img
         className={`${styles.logo} logo`}

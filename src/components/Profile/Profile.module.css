@@ -2,53 +2,122 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 20px 30px;
   border-radius: 8px;
   background-color: #f4f4f4;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   margin: auto;
+  width: 100%;
 }
 
-.profileImageContainer {
-  margin-bottom: 20px;
+.profileHeader {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.hr {
+  height: 1px;
+  background-color: #333;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .profileDetail {
   margin: 5px 0;
-  font-size: 18px;
+  font-size: 16px;
   color: #333;
+  display: flex;
+  width: 100%;
 }
 
 .profileDetailLabel {
   font-weight: bold;
-  margin-right: 10px;
+  width: 30%;
+  min-width: 100px;
+  text-align: left;
 }
 
-.editButton {
-  padding: 10px 20px;
-  margin: 20px 10px;
-  background-color: #007bff;
+.profileDetailContent {
+  width: 70%;
+  text-align: left;
+}
+
+.actionButton {
+  padding: 1rem 2rem;
+  margin-top: 10px;
+  background-color: #6c757d;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.1s;
+  width: -webkit-fill-available;
 }
 
-.editButton:hover {
+.actionButton:hover {
   background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.formField {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.formLabel {
+  display: flex;
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 16px;
+}
+
+.formInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
+.cancelButton {
+  background-color: #6c757d;
+  color: white;
+}
+
+.saveButton {
+  background-color: #007bff;
+  color: white;
+}
+
+.saveButton:hover,
+.saveButton:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cancelButton:hover,
+.cancelButton:focus {
+  background-color: #565e64;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .profilePicInput {
-  display: flex;
-  align-items: flex-end;
-  margin: 10px 0;
+  border: 2px solid #e8e9eb;
+  border-radius: 50%;
 }
 
 .fileInput {
-  width: auto;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+  z-index: -1;
 }
 
 .profilePic {
@@ -70,13 +139,55 @@
   background-color: #f3f3f3;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  border: 2px solid #ffffff;
-  font-size: 12px;
   margin: auto;
+  transition: box-shadow 0.3s, transform 0.1s;
+}
+
+.profileImageContainer:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
 }
 
 .placeholderIcon {
   height: 48px;
   width: 48px;
   color: #9b9b9b;
+}
+
+.updateImage {
+  font-size: 12px
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slideIn {
+  animation: slideInFromLeft 0.5s forwards;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 400px;
+  z-index: 1;
+  background-color: #fff;
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.slideOut {
+  animation: slideOutToLeft 0.5s forwards;
 }
