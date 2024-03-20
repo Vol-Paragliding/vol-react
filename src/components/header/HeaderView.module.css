@@ -26,3 +26,22 @@
   margin-left: 10px;
   font-weight: bold;
 }
+
+.iconLink {
+  display: flex;
+  color: #333;
+  padding: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.iconLink:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.tabContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
