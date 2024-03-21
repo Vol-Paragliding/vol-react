@@ -1,4 +1,41 @@
-.form-container {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.start-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #e9ecef;
+}
+
+.start-content {
+  max-width: 500px;
+  min-height: 550px;
+}
+
+.start-action-container {
+  margin-top: 2.3rem;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.or-separator {
+  color: #333;
+  margin: 1rem 0;
+}
+
+.auth-form-container {
   background: #ffffff;
   padding: 2rem;
   border-radius: 8px;
@@ -10,7 +47,7 @@
   min-height: 452px;
 }
 
-.form-title {
+.auth-form-title {
   font-size: 1.5rem;
   color: #333;
   margin-top: 1rem;
@@ -18,65 +55,25 @@
   text-align: center;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-}
-
-.input-group {
+.auth-input-group {
   margin-bottom: 1rem;
 }
 
-input {
+.auth-input-group > input {
   width: 100%;
-  padding: 10px;
+  padding: 1rem;
   margin-bottom: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
   font-size: 1rem;
 }
 
-.form-header {
+.auth-form-header {
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
   color: black;
   font-size: 12px;
-}
-
-.login-button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.login-button:hover {
-  background-color: #0056b3;
-}
-
-.logout-button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #0056b3;
-}
-
-.error-message {
-  color: #ff0000;
-  margin-bottom: 1rem;
 }
 
 .credentials-form {
@@ -85,41 +82,28 @@ input {
   width: 100%;
 }
 
-.input-group {
-  margin-bottom: 1rem;
-}
-
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 1rem;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
-}
-
-input[type="text"]::placeholder,
-input[type="password"]::placeholder {
-  color: #aaa;
-}
-
-.submit-button {
-  padding: 1rem 2rem;
-  font-size: 1rem;
+.create-login-button {
   color: white;
   background-color: #007bff;
-  width: -webkit-fill-available;
-  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
   border-radius: 4px;
+  border: none;
   cursor: pointer;
+  width: 100%;
   transition: background-color 0.3s ease;
 }
 
-.submit-button:hover {
-  background-color: #0056b3;
+.create-login-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.close-button {
+.create-login-button:first-child {
+  background-color: #4a5055;
+}
+
+.auth-close-button {
   font-size: 1.5rem;
   position: absolute;
   top: 10px;
@@ -131,7 +115,7 @@ input[type="password"]::placeholder {
   height: 40px;
 }
 
-.close-button:hover {
+.auth-close-button:hover {
   color: #7b6b6b;
 }
 

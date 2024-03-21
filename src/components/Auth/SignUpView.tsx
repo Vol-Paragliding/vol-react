@@ -53,19 +53,19 @@ const SignUpView = ({ onClose }: SignUpViewProps) => {
   };
 
   return (
-    <div className="form-container">
-      <button className="close-button" onClick={onClose}>
+    <div className="auth-form-container">
+      <button className="auth-close-button" onClick={onClose}>
         &times;
       </button>
       <img className="logo" src={appIcon} alt="Paragliding logo" />
-      <h1 className="form-title">Sign up</h1>
+      <h1 className="auth-form-title">Sign up</h1>
       <div className="credentials-form">
         <form onSubmit={handleSignUp}>
-          <div className="form-header">
+          <div className="auth-form-header">
             <h2>Create your account</h2>
           </div>
           {error && <div className="signup-error">{error}</div>}
-          <div className="input-group">
+          <div className="auth-input-group">
             <input
               ref={usernameRef}
               type="text"
@@ -77,7 +77,7 @@ const SignUpView = ({ onClose }: SignUpViewProps) => {
               required
             />
           </div>
-          <div className="input-group">
+          <div className="auth-input-group">
             <input
               type="password"
               placeholder="Password"
@@ -88,7 +88,7 @@ const SignUpView = ({ onClose }: SignUpViewProps) => {
               required
             />
           </div>
-          <button type="submit" className="submit-button">
+          <button type="submit" className="create-login-button">
             Sign Up
           </button>
         </form>

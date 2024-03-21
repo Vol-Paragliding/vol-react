@@ -41,19 +41,19 @@ const LogInView = ({ onClose }: LogInViewProps) => {
   };
 
   return (
-    <div className="form-container">
-      <button className="close-button" onClick={onClose}>
+    <div className="auth-form-container">
+      <button className="auth-close-button" onClick={onClose}>
         &times;
       </button>
       <img className="logo" src={appIcon} alt="Paragliding logo" />
-      <h1 className="form-title">Log in</h1>
+      <h1 className="auth-form-title">Log in</h1>
       <div className="credentials-form">
         <form onSubmit={handleLogin}>
           {error && <div className="signup-error">{error}</div>}
-          <div className="form-header">
+          <div className="auth-form-header">
             <h2>Enter your login credentials</h2>
           </div>
-          <div className="input-group">
+          <div className="auth-input-group">
             <input
               ref={usernameRef}
               type="text"
@@ -66,7 +66,7 @@ const LogInView = ({ onClose }: LogInViewProps) => {
               required
             />
           </div>
-          <div className="input-group">
+          <div className="auth-input-group">
             <input
               type="password"
               placeholder="Your password"
@@ -76,7 +76,7 @@ const LogInView = ({ onClose }: LogInViewProps) => {
               required
             />
           </div>
-          <button type="submit" className="submit-button">
+          <button type="submit" className="create-login-button">
             Log In
           </button>
         </form>

@@ -3,7 +3,7 @@ import { useState } from "react";
 import LoginView from "./LoginView";
 import SignUpView from "./SignUpView";
 import appIcon from "../../assets/appIcon.png";
-import "./StartView.css";
+import "./auth.css";
 
 const StartView = () => {
   const [isLoginPresented, setIsLoginPresented] = useState(false);
@@ -17,25 +17,25 @@ const StartView = () => {
   };
 
   return (
-    <main className="container">
-      <section className="content">
+    <main className="start-container">
+      <section className="start-content">
         {!isLoginPresented && !isSignUpPresented && (
-          <div className="form-container">
+          <div className="auth-form-container">
             <img className="logo" src={appIcon} alt="Paragliding logo" />
-            <h1 className="form-title">Explore the paragliding world</h1>
-            <div className="form-header">
+            <h1 className="auth-form-title">Explore the paragliding world</h1>
+            <div className="auth-form-header">
               <h2>join or sign back in</h2>
             </div>
-            <div className="action-container">
+            <div className="start-action-container">
               <button
-                className="action-button create-account"
+                className="create-login-button"
                 onClick={handleSignUpPress}
               >
                 Create Account
               </button>
-              <div className="separator">or</div>
+              <div className="or-separator">or</div>
               <button
-                className="action-button login"
+                className="create-login-button"
                 onClick={handleLoginPress}
               >
                 Log In
@@ -43,12 +43,8 @@ const StartView = () => {
             </div>
           </div>
         )}
-        {isLoginPresented && (
-          <LoginView onClose={handleClose} />
-        )}
-        {isSignUpPresented && (
-          <SignUpView onClose={handleClose} />
-        )}
+        {isLoginPresented && <LoginView onClose={handleClose} />}
+        {isSignUpPresented && <SignUpView onClose={handleClose} />}
       </section>
     </main>
   );

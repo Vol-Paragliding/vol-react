@@ -98,7 +98,7 @@ export const EditProfileView = () => {
             ref={fileInputRef}
           />
           <div
-            className={styles.profileImageContainer}
+            className={`${styles.profileImageContainer} ${styles.editProfileImageContainer}`}
             onClick={handleImageContainerClick}
           >
             {userData.profilePicture ? (
