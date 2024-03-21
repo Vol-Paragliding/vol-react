@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/auth/useAuth";
 import { login } from "../../contexts/auth/AuthSlice";
 import appIcon from "../../assets/appIcon.png";
-import "./auth.css";
+import styles from "./auth.module.css";
 
 type LogInViewProps = {
   onClose: React.MouseEventHandler;
@@ -41,19 +41,19 @@ const LogInView = ({ onClose }: LogInViewProps) => {
   };
 
   return (
-    <div className="auth-form-container">
-      <button className="auth-close-button" onClick={onClose}>
+    <div className={styles.authFormContainer}>
+      <button className={styles.authCloseButton} onClick={onClose}>
         &times;
       </button>
-      <img className="logo" src={appIcon} alt="Paragliding logo" />
-      <h1 className="auth-form-title">Log in</h1>
-      <div className="credentials-form">
+      <img className={styles.logo} src={appIcon} alt="Paragliding logo" />
+      <h1 className={styles.authFormTitle}>Log in</h1>
+      <div className={styles.credentialsForm}>
         <form onSubmit={handleLogin}>
-          {error && <div className="signup-error">{error}</div>}
-          <div className="auth-form-header">
+          {error && <div className={styles.signupError}>{error}</div>}
+          <div className={styles.authFormHeader}>
             <h2>Enter your login credentials</h2>
           </div>
-          <div className="auth-input-group">
+          <div className={styles.authInputGroup}>
             <input
               ref={usernameRef}
               type="text"
@@ -66,7 +66,7 @@ const LogInView = ({ onClose }: LogInViewProps) => {
               required
             />
           </div>
-          <div className="auth-input-group">
+          <div className={styles.authInputGroup}>
             <input
               type="password"
               placeholder="Your password"
@@ -76,7 +76,7 @@ const LogInView = ({ onClose }: LogInViewProps) => {
               required
             />
           </div>
-          <button type="submit" className="create-login-button">
+          <button type="submit" className={styles.createLoginButton}>
             Log In
           </button>
         </form>

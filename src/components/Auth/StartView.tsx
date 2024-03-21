@@ -3,7 +3,7 @@ import { useState } from "react";
 import LoginView from "./LoginView";
 import SignUpView from "./SignUpView";
 import appIcon from "../../assets/appIcon.png";
-import "./auth.css";
+import styles from "./auth.module.css";
 
 const StartView = () => {
   const [isLoginPresented, setIsLoginPresented] = useState(false);
@@ -17,25 +17,27 @@ const StartView = () => {
   };
 
   return (
-    <main className="start-container">
-      <section className="start-content">
+    <main className={styles.startContainer}>
+      <section className={styles.startContent}>
         {!isLoginPresented && !isSignUpPresented && (
-          <div className="auth-form-container">
-            <img className="logo" src={appIcon} alt="Paragliding logo" />
-            <h1 className="auth-form-title">Explore the paragliding world</h1>
-            <div className="auth-form-header">
+          <div className={styles.authFormContainer}>
+            <img className={styles.logo} src={appIcon} alt="Paragliding logo" />
+            <h1 className={styles.authFormTitle}>
+              Explore the paragliding world
+            </h1>
+            <div className={styles.authFormHeader}>
               <h2>join or sign back in</h2>
             </div>
-            <div className="start-action-container">
+            <div className={styles.startActionContainer}>
               <button
-                className="create-login-button"
+                className={`${styles.createLoginButton} ${styles.firstCreateLoginButton}`}
                 onClick={handleSignUpPress}
               >
                 Create Account
               </button>
-              <div className="or-separator">or</div>
+              <div className={styles.orSeparator}>or</div>
               <button
-                className="create-login-button"
+                className={styles.createLoginButton}
                 onClick={handleLoginPress}
               >
                 Log In

@@ -5,7 +5,7 @@ import { sanitizeInput } from "../utils";
 import { useAuth } from "../../contexts/auth/useAuth";
 import { signup } from "../../contexts/auth/AuthSlice";
 import appIcon from "../../assets/appIcon.png";
-import "./auth.css";
+import styles from "./auth.module.css";
 
 type SignUpViewProps = {
   onClose: React.MouseEventHandler<HTMLButtonElement> | undefined;
@@ -53,19 +53,19 @@ const SignUpView = ({ onClose }: SignUpViewProps) => {
   };
 
   return (
-    <div className="auth-form-container">
-      <button className="auth-close-button" onClick={onClose}>
+    <div className={styles.authFormContainer}>
+      <button className={styles.authCloseButton} onClick={onClose}>
         &times;
       </button>
-      <img className="logo" src={appIcon} alt="Paragliding logo" />
-      <h1 className="auth-form-title">Sign up</h1>
-      <div className="credentials-form">
+      <img className={styles.logo} src={appIcon} alt="Paragliding logo" />
+      <h1 className={styles.authFormTitle}>Sign up</h1>
+      <div className={styles.credentialsForm}>
         <form onSubmit={handleSignUp}>
-          <div className="auth-form-header">
+          <div className={styles.authFormHeader}>
             <h2>Create your account</h2>
           </div>
-          {error && <div className="signup-error">{error}</div>}
-          <div className="auth-input-group">
+          {error && <div className={styles.signupError}>{error}</div>}
+          <div className={styles.authInputGroup}>
             <input
               ref={usernameRef}
               type="text"
@@ -77,7 +77,7 @@ const SignUpView = ({ onClose }: SignUpViewProps) => {
               required
             />
           </div>
-          <div className="auth-input-group">
+          <div className={styles.authInputGroup}>
             <input
               type="password"
               placeholder="Password"
@@ -88,7 +88,7 @@ const SignUpView = ({ onClose }: SignUpViewProps) => {
               required
             />
           </div>
-          <button type="submit" className="create-login-button">
+          <button type="submit" className={styles.createLoginButton}>
             Sign Up
           </button>
         </form>

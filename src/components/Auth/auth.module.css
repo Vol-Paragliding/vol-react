@@ -1,11 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, "system-ui", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
-.start-container {
+.startContainer {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -17,12 +10,12 @@
   background-color: #e9ecef;
 }
 
-.start-content {
+.startContent {
   max-width: 500px;
   min-height: 550px;
 }
 
-.start-action-container {
+.startActionContainer {
   margin-top: 2.3rem;
   height: 200px;
   display: flex;
@@ -30,12 +23,12 @@
   justify-content: space-evenly;
 }
 
-.or-separator {
+.orSeparator {
   color: #333;
   margin: 1rem 0;
 }
 
-.auth-form-container {
+.authFormContainer {
   background: #ffffff;
   padding: 2rem;
   border-radius: 8px;
@@ -44,10 +37,10 @@
   margin: auto;
   position: relative;
   width: 400px;
-  min-height: 452px;
+  min-height: 462px;
 }
 
-.auth-form-title {
+.authFormTitle {
   font-size: 1.5rem;
   color: #333;
   margin-top: 1rem;
@@ -55,11 +48,11 @@
   text-align: center;
 }
 
-.auth-input-group {
+.authInputGroup {
   margin-bottom: 1rem;
 }
 
-.auth-input-group > input {
+.authInputGroup > input {
   width: 100%;
   padding: 1rem;
   margin-bottom: 10px;
@@ -68,7 +61,7 @@
   font-size: 1rem;
 }
 
-.auth-form-header {
+.authFormHeader {
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
@@ -76,13 +69,13 @@
   font-size: 12px;
 }
 
-.credentials-form {
+.credentialsForm {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.create-login-button {
+.createLoginButton {
   color: white;
   background-color: #007bff;
   padding: 1rem 2rem;
@@ -94,16 +87,16 @@
   transition: background-color 0.3s ease;
 }
 
-.create-login-button:hover {
+.createLoginButton:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.create-login-button:first-child {
+.firstCreateLoginButton {
   background-color: #4a5055;
 }
 
-.auth-close-button {
+.authCloseButton {
   font-size: 1.5rem;
   position: absolute;
   top: 10px;
@@ -115,11 +108,11 @@
   height: 40px;
 }
 
-.auth-close-button:hover {
+.authCloseButton:hover {
   color: #7b6b6b;
 }
 
-.signup-error {
+.signupError {
   color: #ff0000;
   margin-bottom: 1rem;
 }
