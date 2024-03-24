@@ -44,13 +44,12 @@ export const EditProfileView = () => {
     if (!selectedFile) return null;
     try {
       const { name: fileName, type: mimeType } = selectedFile;
-      const uploadResult = await uploadImage(
+      return uploadImage(
         fileName,
         mimeType,
         selectedFile,
         authState.authUser?.feedToken || ""
       );
-      return uploadResult ? uploadResult.toString() : null;
     } catch (error) {
       console.error("Error uploading image: ", error);
       return null;
@@ -64,12 +63,10 @@ export const EditProfileView = () => {
     }
 
     try {
-      let imageUrl = imageSrc;
-      if (selectedFile) imageUrl = await handleUpload();
-
+      const imageUrl = selectedFile ? await handleUpload() : imageSrc;
       const updatedUserData = {
         ...userData,
-        profilePicture: imageUrl || userData.profilePicture,
+        profilePicture: imageUrl?.toString() ?? userData.profilePicture,
       };
 
       const updatedUser = await updateUser(
@@ -112,24 +109,28 @@ export const EditProfileView = () => {
         </div>
         <input
           className={styles.formInput}
+          name="firstname"
           value={userData.firstname}
           onChange={(e) => handleInputChange(e, "firstname")}
           placeholder="Firstname"
         />
         <input
           className={styles.formInput}
+          name="lastname"
           value={userData.lastname}
           onChange={(e) => handleInputChange(e, "lastname")}
           placeholder="Lastname"
         />
         <input
           className={styles.formInput}
+          name="location"
           value={userData.location}
           onChange={(e) => handleInputChange(e, "location")}
           placeholder="Location"
         />
         <textarea
           className={styles.formInput}
+          name="aboutMe"
           value={userData.aboutMe}
           onChange={(e) => handleInputChange(e, "aboutMe")}
           placeholder="Bio"

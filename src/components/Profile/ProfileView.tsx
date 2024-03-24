@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+
 import { useAuth } from "../../contexts/auth/useAuth";
 import { useUserFeed } from "../../contexts/feed/useUserFeed";
 import { logout } from "../../contexts/auth/AuthSlice";
@@ -54,7 +55,10 @@ export const ProfileView = () => {
           >
             Edit
           </button>
-          <button className={styles.actionButton} onClick={() => setViewMode("")}>
+          <button
+            className={styles.actionButton}
+            onClick={() => setViewMode("")}
+          >
             Close
           </button>
           <button className={styles.actionButton} onClick={handleLogout}>
