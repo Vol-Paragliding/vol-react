@@ -1,0 +1,37 @@
+.activityContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin-bottom: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.activityContainer:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.activityTitle {
+  margin: 0;
+  padding-bottom: 10px;
+  color: #333;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-bottom: 2px solid #eee;
+}
+
+.activityDescription {
+  margin: 10px 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+.activityTimestamp {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #999;
+  align-self: flex-end;
+}

@@ -1,8 +1,8 @@
-import { useUserFeed } from "../../contexts/feed/useUserFeed";
+import { useFeed } from "../../contexts/feed/useFeed";
 import styles from "./Profile.module.css";
 
 export const UserAvatar = () => {
-  const { feedUser, viewMode, setViewMode } = useUserFeed();
+  const { feedUser, viewMode, setViewMode } = useFeed();
 
   const handleImageClick = () => {
     setViewMode(viewMode === "profile" ? "" : "profile");

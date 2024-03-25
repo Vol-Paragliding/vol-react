@@ -1,5 +1,5 @@
 .mainContent {
-  height: calc(100vh - 50px);
+  max-height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
   margin-top: 50px;

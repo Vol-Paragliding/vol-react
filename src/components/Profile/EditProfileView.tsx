@@ -1,14 +1,14 @@
 import React, { useState, useRef } from "react";
 
 import { useAuth } from "../../contexts/auth/useAuth";
-import { useUserFeed } from "../../contexts/feed/useUserFeed";
-import { UserData } from "../feeds/services/FeedService";
-import { updateUser, uploadImage } from "../feeds/services/FeedService";
+import { useFeed } from "../../contexts/feed/useFeed";
+import { UserData } from "../../interfaces/types";
+import { updateUser, uploadImage } from "../../services/FeedService";
 import styles from "./Profile.module.css";
 
 export const EditProfileView = () => {
   const { state: authState } = useAuth();
-  const { feedUser, setFeedUser, setViewMode } = useUserFeed();
+  const { feedUser, setFeedUser, setViewMode } = useFeed();
 
   const [userData, setUserData] = useState<UserData>({
     firstname: feedUser?.data.firstname || "",

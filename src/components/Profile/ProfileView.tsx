@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../contexts/auth/useAuth";
-import { useUserFeed } from "../../contexts/feed/useUserFeed";
+import { useFeed } from "../../contexts/feed/useFeed";
 import { logout } from "../../contexts/auth/AuthSlice";
 import styles from "./Profile.module.css";
 
 export const ProfileView = () => {
   const { dispatch } = useAuth();
-  const { feedUser, setViewMode, viewMode } = useUserFeed();
+  const { feedUser, setViewMode, viewMode } = useFeed();
   const navigate = useNavigate();
 
   const handleLogout = () => {

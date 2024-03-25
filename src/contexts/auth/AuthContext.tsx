@@ -1,4 +1,5 @@
 import { createContext, useReducer, useEffect } from "react";
+
 import { AuthAction, AuthState, initialState, authReducer } from "./AuthSlice";
 
 export const AuthContext = createContext<{
@@ -16,9 +17,12 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState, () => {
     const storedUser = sessionStorage.getItem("authUser");
-    return storedUser
-      ? { ...initialState, authUser: JSON.parse(storedUser) }
-      : initialState;
+    const user = storedUser ? JSON.parse(storedUser) : null;
+    return {
+      ...initialState,
+      authUser: user,
+      isAuthenticated: !!user,
+    };
   });
 
   useEffect(() => {

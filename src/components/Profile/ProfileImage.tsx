@@ -1,8 +1,8 @@
 import { EditProfileView, ProfileView, UserAvatar } from "../profile";
-import { useUserFeed } from "../../contexts/feed/useUserFeed";
+import { useFeed } from "../../contexts/feed/useFeed";
 
 export const ProfileImage = () => {
-  const { viewMode } = useUserFeed();
+  const { viewMode } = useFeed();
 
   return (
     <div>

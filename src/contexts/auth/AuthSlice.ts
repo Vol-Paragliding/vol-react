@@ -1,35 +1,33 @@
 import { API_ENDPOINT } from "../../config";
-import AuthUser from "../../interfaces/types";
+import { AuthUser } from "../../interfaces/types";
 
 type AuthAction =
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_USER'; payload: AuthUser | null }
   | { type: 'SET_ERROR'; payload: string | null }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  | { type: 'SET_FEED_DATA'; payload: any }; // Adjust the payload type based on data structure
 
 type AuthState = {
   authUser: AuthUser | null;
+  isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
 };
 
 export const initialState: AuthState = {
   authUser: null,
+  isAuthenticated: false,
   loading: false,
   error: null,
 };
 
-export const authReducer = (state: AuthState, action: AuthAction) => {
+export const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
     case "SET_LOADING":
       return { ...state, loading: action.payload };
     case "SET_USER":
-      return { ...state, authUser: action.payload };
+      return { ...state, authUser: action.payload, isAuthenticated: !!action.payload };
     case "SET_ERROR":
       return { ...state, error: action.payload };
-    case "SET_FEED_DATA":
-      return { ...state, feedData: action.payload };
     default:
       return state;
   }
