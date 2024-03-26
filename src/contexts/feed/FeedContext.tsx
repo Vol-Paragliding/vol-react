@@ -43,7 +43,7 @@ interface FeedContextType {
   getFollowing: () => Promise<void>;
   getUserActivities: () => Promise<void>;
   getTimelineActivities: () => Promise<void>;
-  addActivity: (activity: PostActivity) => Promise<void>;
+  addActivity: (activity) => Promise<void>;
   addReaction: (params: ReplyReactionParamModel) => Promise<void>;
   addLike: (params: LikeReactionParamModel) => Promise<void>;
   uploadImage: (
@@ -72,6 +72,10 @@ export const FeedProvider = ({ children }: { children: React.ReactNode }) => {
         );
         setFeedUser(user);
 
+        // const userActivities: PostActivity[] = await getTimelineActivities(
+        //   authState.authUser!.userId,
+        //   authState.authUser!.feedToken
+        // );
         const userActivities: PostActivity[] = await getUserActivities(
           authState.authUser!.userId,
           authState.authUser!.feedToken
@@ -131,7 +135,7 @@ export const FeedProvider = ({ children }: { children: React.ReactNode }) => {
         authState.authUser?.userId || "",
         authState.authUser?.feedToken || ""
       ),
-    addActivity: (activity: PostActivity) =>
+    addActivity: (activity) =>
       addActivity(
         authState.authUser?.userId || "",
         authState.authUser?.feedToken || "",
