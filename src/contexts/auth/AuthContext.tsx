@@ -3,10 +3,10 @@ import { createContext, useReducer, useEffect } from "react";
 import { AuthAction, AuthState, initialState, authReducer } from "./AuthSlice";
 
 export const AuthContext = createContext<{
-  state: AuthState;
+  authState: AuthState;
   dispatch: React.Dispatch<AuthAction>;
 }>({
-  state: initialState,
+  authState: initialState,
   dispatch: () => null,
 });
 
@@ -15,7 +15,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, initialState, () => {
+  const [authState, dispatch] = useReducer(authReducer, initialState, () => {
     const storedUser = sessionStorage.getItem("authUser");
     const user = storedUser ? JSON.parse(storedUser) : null;
     return {
@@ -26,15 +26,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   });
 
   useEffect(() => {
-    if (state.authUser) {
-      sessionStorage.setItem("authUser", JSON.stringify(state.authUser));
+    if (authState.authUser) {
+      sessionStorage.setItem("authUser", JSON.stringify(authState.authUser));
     } else {
       sessionStorage.removeItem("authUser");
     }
-  }, [state.authUser]);
+  }, [authState.authUser]);
 
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>
+    <AuthContext.Provider value={{ authState, dispatch }}>
       {children}
     </AuthContext.Provider>
   );

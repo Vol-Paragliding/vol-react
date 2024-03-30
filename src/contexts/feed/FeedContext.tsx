@@ -1,165 +1,114 @@
 import React, { createContext, useState, useEffect } from "react";
+import {
+  connect,
+  DefaultGenerics,
+  NewActivity,
+  StreamFeed,
+  StreamUser,
+} from "getstream";
+
 import { useAuth } from "../auth/useAuth";
-import {
-  getUser,
-  updateUser,
-  createUser,
-  follow,
-  unfollow,
-  getFollowers,
-  getFollowing,
-  getUserActivities,
-  getTimelineActivities,
-  addActivity,
-  addReaction,
-  addLike,
-  uploadImage,
-  deleteImage,
-  processImage,
-} from "../../services/FeedService";
-import {
-  FeedUser,
-  PostActivity,
-  UserData,
-  FollowParamModel,
-  UnfollowParamModel,
-  ReplyReactionParamModel,
-  LikeReactionParamModel,
-  CdnImageOptions,
-} from "../../interfaces/types";
+
+const apiKey = import.meta.env.VITE_REACT_APP_API_KEY || "";
+const appId = import.meta.env.VITE_APP_STREAM_APP_ID || "";
 
 interface FeedContextType {
-  feedUser: FeedUser | null;
-  setFeedUser: React.Dispatch<React.SetStateAction<FeedUser | null>>;
+  feedUser: StreamUser | null;
+  setFeedUser: React.Dispatch<React.SetStateAction<StreamUser | null>>;
+  feedClient: StreamFeed<DefaultGenerics> | null;
   viewMode: string;
   setViewMode: React.Dispatch<React.SetStateAction<string>>;
-  activities: PostActivity[];
-  setActivities: React.Dispatch<React.SetStateAction<PostActivity[]>>;
-  updateUser: (userData: UserData) => Promise<void>;
-  createUser: (userData: UserData) => Promise<void>;
-  follow: (params: FollowParamModel) => Promise<void>;
-  unfollow: (params: UnfollowParamModel, target: string) => Promise<void>;
-  getFollowers: () => Promise<void>;
-  getFollowing: () => Promise<void>;
-  getUserActivities: () => Promise<void>;
-  getTimelineActivities: () => Promise<void>;
-  addActivity: (activity) => Promise<void>;
-  addReaction: (params: ReplyReactionParamModel) => Promise<void>;
-  addLike: (params: LikeReactionParamModel) => Promise<void>;
-  uploadImage: (
-    fileName: string,
-    mimeType: string,
-    imageData: Blob
-  ) => Promise<URL>;
-  deleteImage: (cdnUrl: string) => Promise<void>;
-  processImage: (cdnUrl: string, options: CdnImageOptions) => Promise<string>;
+  userActivities: NewActivity<DefaultGenerics>[];
+  setUserActivities: React.Dispatch<
+    React.SetStateAction<NewActivity<DefaultGenerics>[]>
+  >;
+  addActivity: (newActivity: NewActivity) => Promise<void>;
+  getActivities: () => Promise<void>;
 }
 
 export const FeedContext = createContext<FeedContextType | null>(null);
 
 export const FeedProvider = ({ children }: { children: React.ReactNode }) => {
-  const { state: authState } = useAuth();
-  const [feedUser, setFeedUser] = useState<FeedUser | null>(null);
+  const { authState } = useAuth();
+  const [feedUser, setFeedUser] = useState<StreamUser<DefaultGenerics> | null>(
+    null
+  );
+  const [feedClient, setFeedClient] =
+    useState<StreamFeed<DefaultGenerics> | null>(null);
   const [viewMode, setViewMode] = useState("");
-  const [activities, setActivities] = useState<PostActivity[]>([]);
+  const [userActivities, setUserActivities] = useState<
+    NewActivity<DefaultGenerics>[]
+  >([]);
 
   useEffect(() => {
     if (authState.isAuthenticated && authState.authUser) {
-      const fetchInitialData = async () => {
-        const user: FeedUser = await getUser(
-          authState.authUser!.userId,
-          authState.authUser!.feedToken
-        );
-        setFeedUser(user);
+      const client = connect(apiKey, authState.authUser.feedToken, appId);
+      const userFeed = client.feed("user", authState.authUser.userId);
 
-        // const userActivities: PostActivity[] = await getTimelineActivities(
-        //   authState.authUser!.userId,
-        //   authState.authUser!.feedToken
-        // );
-        const userActivities: PostActivity[] = await getUserActivities(
-          authState.authUser!.userId,
-          authState.authUser!.feedToken
-        );
-        setActivities(userActivities);
+      setFeedClient(userFeed);
+
+      const fetchInitialData = async () => {
+        try {
+          if (!authState.authUser) return;
+
+          const userResponse = await client
+            .user(authState.authUser.userId)
+            .get();
+          setFeedUser(userResponse);
+
+          const activityResponse = await userFeed.get({ limit: 10 });
+          setUserActivities(
+            activityResponse.results as NewActivity<DefaultGenerics>[]
+          );
+        } catch (error) {
+          console.error("Error fetching user and activities: ", error);
+        }
       };
 
       fetchInitialData();
     }
-  }, [authState.isAuthenticated, authState.authUser]);
+  }, [authState]);
+
+  const addActivity = async (newActivity: NewActivity) => {
+    if (!feedClient) return;
+    try {
+      await feedClient.addActivity(newActivity);
+      setUserActivities((prevActivities) => [newActivity, ...prevActivities]);
+    } catch (error) {
+      console.error("Error adding activity: ", error);
+      throw error;
+    }
+  };
+
+  const getActivities = async () => {
+    if (!feedClient) return;
+    try {
+      const response = await feedClient.get({ limit: 10 });
+      // const activities: NewActivity<DefaultGenerics>[] = response.results.map(activity => ({
+      //   actor: activity.actor,
+      //   object: activity.object,
+      //   verb: activity.verb,
+      //   foreign_id: activity.foreign_id,
+      //   time: activity.time,
+      // }));
+      const activities = response.results as NewActivity<DefaultGenerics>[];
+      setUserActivities(activities);
+    } catch (error) {
+      console.error("Error fetching user activities: ", error);
+      throw error;
+    }
+  };
 
   const contextValue: FeedContextType = {
     feedUser,
     setFeedUser,
+    feedClient,
     viewMode,
     setViewMode,
-    activities,
-    setActivities,
-    updateUser: (userData: UserData) =>
-      updateUser(
-        userData,
-        authState.authUser?.userId || "",
-        authState.authUser?.feedToken || ""
-      ),
-    createUser: (userData: UserData) =>
-      createUser(userData, authState.authUser?.feedToken || ""),
-    follow: (params: FollowParamModel) =>
-      follow(
-        params,
-        authState.authUser?.userId || "",
-        authState.authUser?.feedToken || ""
-      ),
-    unfollow: (params: UnfollowParamModel, target: string) =>
-      unfollow(
-        params,
-        target,
-        authState.authUser?.userId || "",
-        authState.authUser?.feedToken || ""
-      ),
-    getFollowers: () =>
-      getFollowers(
-        authState.authUser?.userId || "",
-        authState.authUser?.feedToken || ""
-      ),
-    getFollowing: () =>
-      getFollowing(
-        authState.authUser?.userId || "",
-        authState.authUser?.feedToken || ""
-      ),
-    getUserActivities: () =>
-      getUserActivities(
-        authState.authUser?.userId || "",
-        authState.authUser?.feedToken || ""
-      ),
-    getTimelineActivities: () =>
-      getTimelineActivities(
-        authState.authUser?.userId || "",
-        authState.authUser?.feedToken || ""
-      ),
-    addActivity: (activity) =>
-      addActivity(
-        authState.authUser?.userId || "",
-        authState.authUser?.feedToken || "",
-        activity
-      ),
-    addReaction: (params: ReplyReactionParamModel) =>
-      addReaction(
-        params.activityId,
-        params.reply,
-        authState.authUser?.feedToken || ""
-      ),
-    addLike: (params: LikeReactionParamModel) =>
-      addLike(params.activityId, authState.authUser?.feedToken || ""),
-    uploadImage: (fileName: string, mimeType: string, imageData: Blob) =>
-      uploadImage(
-        fileName,
-        mimeType,
-        imageData,
-        authState.authUser?.feedToken || ""
-      ),
-    deleteImage: (cdnUrl: string) =>
-      deleteImage(cdnUrl, authState.authUser?.feedToken || ""),
-    processImage: (cdnUrl: string, options: CdnImageOptions) =>
-      processImage(cdnUrl, options, authState.authUser?.feedToken || ""),
+    userActivities,
+    setUserActivities,
+    addActivity,
+    getActivities,
   };
 
   return (

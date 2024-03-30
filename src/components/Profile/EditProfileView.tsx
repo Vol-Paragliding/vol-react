@@ -7,18 +7,18 @@ import { updateUser, uploadImage } from "../../services/FeedService";
 import styles from "./Profile.module.css";
 
 export const EditProfileView = () => {
-  const { state: authState } = useAuth();
+  const { authState } = useAuth();
   const { feedUser, setFeedUser, setViewMode } = useFeed();
 
   const [userData, setUserData] = useState<UserData>({
-    firstname: feedUser?.data.firstname || "",
-    lastname: feedUser?.data.lastname || "",
-    aboutMe: feedUser?.data.aboutMe || "",
-    location: feedUser?.data.location || "",
+    firstname: feedUser?.data?.firstname as string || "",
+    lastname: feedUser?.data?.lastname as string || "",
+    aboutMe: feedUser?.data?.aboutMe as string || "",
+    location: feedUser?.data?.location as string || "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null | undefined>(
-    feedUser?.data.profilePicture
+    feedUser?.data?.profilePicture as string | null | undefined
   );
 
   const fileInputRef = useRef<HTMLInputElement>(null);

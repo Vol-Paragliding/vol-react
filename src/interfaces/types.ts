@@ -6,9 +6,9 @@ export interface AuthUser {
 }
 
 export interface UserData {
-  firstname: string;
-  lastname: string;
-  aboutMe?: string | undefined;
+  firstname?: string;
+  lastname?: string;
+  aboutMe?: string;
   location?: string;
   profilePicture?: string;
 }

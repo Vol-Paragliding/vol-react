@@ -27,25 +27,25 @@ export const ProfileView = () => {
         <div className={styles.profileDetail}>
           <span className={styles.profileDetailLabel}>First Name:</span>
           <span className={styles.profileDetailContent}>
-            {feedUser.data.firstname}
+            {feedUser.data?.firstname as string}
           </span>
         </div>
         <div className={styles.profileDetail}>
           <span className={styles.profileDetailLabel}>Last Name:</span>
           <span className={styles.profileDetailContent}>
-            {feedUser.data.lastname}
+            {feedUser.data?.lastname as string}
           </span>
         </div>
         <div className={styles.profileDetail}>
           <span className={styles.profileDetailLabel}>Location:</span>
           <span className={styles.profileDetailContent}>
-            {feedUser.data.location}
+            {feedUser.data?.location as string}
           </span>
         </div>
         <div className={styles.profileDetail}>
           <span className={styles.profileDetailLabel}>Bio:</span>
           <span className={styles.profileDetailContent}>
-            {feedUser.data.aboutMe}
+            {feedUser.data?.aboutMe as string}
           </span>
         </div>
         <div>

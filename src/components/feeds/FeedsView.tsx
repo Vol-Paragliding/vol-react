@@ -5,9 +5,9 @@ import { useFeed } from "../../contexts/feed/useFeed";
 import FeedActivity from "./FeedActivity";
 
 const FeedsView = () => {
-  // const { state: authState } = useAuth();
-  const { activities } = useFeed();
-  // const { activities, isLoading } = useFeedActivities(
+  // const { authState } = useAuth();
+  const { userActivities } = useFeed();
+  // const { userActivities, isLoading } = useFeedActivities(
   //   authState.authUser?.userId ?? "",
   //   authState.authUser?.feedToken ?? "",
   //   // "timeline"
@@ -15,13 +15,13 @@ const FeedsView = () => {
   // );
 
   // if (isLoading) {
-  //   return <div>Loading activities...</div>;
+  //   return <div>Loading userActivities...</div>;
   // }
 
   return (
     <div>
-      {activities.map((activity) => (
-        <FeedActivity key={activity.id} activity={activity} />
+      {userActivities.map((activity) => (
+        <FeedActivity key={activity.id as string} activity={activity} />
       ))}
     </div>
   );

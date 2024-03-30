@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useFeed } from "../../contexts/feed/useFeed";
-import { useAuth } from "../../contexts/auth/useAuth";
+// import { useAuth } from "../../contexts/auth/useAuth";
 import styles from "./AddNewPost.module.css";
 
 const AddNewPostView = () => {
   const [text, setText] = useState("");
   const [error, setError] = useState("");
   const { addActivity, feedUser } = useFeed();
-  const { state: authState } = useAuth();
+  // const { authState } = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

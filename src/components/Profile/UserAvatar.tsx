@@ -10,9 +10,9 @@ export const UserAvatar = () => {
 
   return (
     <div className={styles.profileImageContainer} onClick={handleImageClick}>
-      {feedUser?.data.profilePicture ? (
+      {feedUser?.data?.profilePicture ? (
         <img
-          src={feedUser?.data.profilePicture}
+          src={feedUser?.data.profilePicture as string}
           alt="Profile"
           className={styles.profilePic}
         />

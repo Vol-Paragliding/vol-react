@@ -10,14 +10,14 @@ import { ProfileImage } from "../profile";
 import styles from "./HeaderView.module.css";
 
 const HeaderView = () => {
-  const { state } = useAuth();
+  const { authState } = useAuth();
 
   return (
     <div className={styles.header}>
       <div className={styles.profileImageContainer}>
         <ProfileImage />
-        {state.authUser && (
-          <p className={styles.username}>{state.authUser.username}</p>
+        {authState.authUser && (
+          <p className={styles.username}>{authState.authUser.username}</p>
         )}
       </div>
       <div className={styles.tabContainer}>

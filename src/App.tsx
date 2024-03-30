@@ -14,7 +14,7 @@ import { FeedProvider } from "./contexts/feed/FeedContext";
 import "./App.css";
 
 function App() {
-  const { state } = useAuth();
+  const { authState } = useAuth();
 
   return (
     <Router>
@@ -22,10 +22,10 @@ function App() {
         <Route
           path="/"
           element={
-            state.authUser ? <Navigate to="/home" replace /> : <StartView />
+            authState.authUser ? <Navigate to="/home" replace /> : <StartView />
           }
         />
-        {state.authUser && (
+        {authState.authUser && (
           <Route
             path="/home/*"
             element={
