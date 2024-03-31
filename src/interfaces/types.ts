@@ -20,6 +20,11 @@ export interface FeedUser {
   data: UserData;
 }
 
+export interface Attachment {
+  type: string;
+  url: string;
+}
+
 export interface PostActivity {
   id: string;
   actor: string;

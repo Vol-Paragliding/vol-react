@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../contexts/auth/useAuth";
@@ -5,7 +6,7 @@ import { useFeed } from "../../contexts/feed/useFeed";
 import { logout } from "../../contexts/auth/AuthSlice";
 import styles from "./Profile.module.css";
 
-export const ProfileView = () => {
+export const ProfileView: React.FC = () => {
   const { dispatch } = useAuth();
   const { feedUser, setViewMode, viewMode } = useFeed();
   const navigate = useNavigate();

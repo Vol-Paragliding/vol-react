@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SearchView= () => {
+const SearchView: React.FC = () => {
   return (
     <div>
       <h1>Loading...</h1>

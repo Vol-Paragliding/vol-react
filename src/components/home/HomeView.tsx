@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import FeedsView from "../feeds/FeedsView";
@@ -6,7 +7,7 @@ import DirectMessagesView from "../chat/DirectMessagesView";
 import AddNewPostView from "../timeline/AddNewPostView";
 import styles from "./HomeView.module.css";
 
-const HomeView = () => {
+const HomeView: React.FC = () => {
   return (
     <div className={styles.mainContent}>
       <Routes>

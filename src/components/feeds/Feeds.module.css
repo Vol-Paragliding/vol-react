@@ -35,3 +35,26 @@
   color: #999;
   align-self: flex-end;
 }
+
+.attachment {
+  margin-top: 10px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.attachment img {
+  max-width: 80%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.attachmentLink {
+  display: block;
+  margin-top: 5px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.attachmentLink:hover {
+  text-decoration: underline;
+}

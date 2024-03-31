@@ -1,27 +1,22 @@
-// import React, { useContext } from "react";
-// import { useAuth } from "../../contexts/auth/useAuth";
-// import useFeedActivities from "../../hooks/useFeedActivities";
+import React from "react";
+
 import { useFeed } from "../../contexts/feed/useFeed";
 import FeedActivity from "./FeedActivity";
 
-const FeedsView = () => {
-  // const { authState } = useAuth();
+const FeedsView: React.FC = () => {
   const { userActivities } = useFeed();
-  // const { userActivities, isLoading } = useFeedActivities(
-  //   authState.authUser?.userId ?? "",
-  //   authState.authUser?.feedToken ?? "",
-  //   // "timeline"
-  //   "user"
-  // );
 
   // if (isLoading) {
   //   return <div>Loading userActivities...</div>;
   // }
-
+console.log(userActivities)
   return (
     <div>
       {userActivities.map((activity) => (
-        <FeedActivity key={activity.id as string} activity={activity} />
+        <FeedActivity
+          key={activity.foreign_id || (activity.id as string)}
+          activity={activity}
+        />
       ))}
     </div>
   );

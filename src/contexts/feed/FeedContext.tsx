@@ -72,6 +72,7 @@ export const FeedProvider = ({ children }: { children: React.ReactNode }) => {
   const addActivity = async (newActivity: NewActivity) => {
     if (!feedClient) return;
     try {
+      console.log("Adding activity: ", newActivity);
       await feedClient.addActivity(newActivity);
       setUserActivities((prevActivities) => [newActivity, ...prevActivities]);
     } catch (error) {
@@ -84,13 +85,6 @@ export const FeedProvider = ({ children }: { children: React.ReactNode }) => {
     if (!feedClient) return;
     try {
       const response = await feedClient.get({ limit: 10 });
-      // const activities: NewActivity<DefaultGenerics>[] = response.results.map(activity => ({
-      //   actor: activity.actor,
-      //   object: activity.object,
-      //   verb: activity.verb,
-      //   foreign_id: activity.foreign_id,
-      //   time: activity.time,
-      // }));
       const activities = response.results as NewActivity<DefaultGenerics>[];
       setUserActivities(activities);
     } catch (error) {

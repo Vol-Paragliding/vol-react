@@ -1,7 +1,9 @@
-import { EditProfileView, ProfileView, UserAvatar } from "../profile";
-import { useFeed } from "../../contexts/feed/useFeed";
+import React from "react";
 
-export const ProfileImage = () => {
+import { useFeed } from "../../contexts/feed/useFeed";
+import { EditProfileView, ProfileView, UserAvatar } from "../profile";
+
+export const ProfileImage: React.FC = () => {
   const { viewMode } = useFeed();
 
   return (

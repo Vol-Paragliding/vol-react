@@ -1,7 +1,9 @@
+import React from "react";
+
 import { useFeed } from "../../contexts/feed/useFeed";
 import styles from "./Profile.module.css";
 
-export const UserAvatar = () => {
+export const UserAvatar: React.FC = () => {
   const { feedUser, viewMode, setViewMode } = useFeed();
 
   const handleImageClick = () => {
