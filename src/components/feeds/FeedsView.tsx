@@ -9,12 +9,12 @@ const FeedsView: React.FC = () => {
   // if (isLoading) {
   //   return <div>Loading userActivities...</div>;
   // }
-console.log(userActivities)
+
   return (
     <div>
       {userActivities.map((activity) => (
         <FeedActivity
-          key={activity.foreign_id || (activity.id as string)}
+          key={activity.id}
           activity={activity}
         />
       ))}

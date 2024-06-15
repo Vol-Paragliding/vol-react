@@ -1,3 +1,5 @@
+import { DefaultGenerics, FlatActivity } from 'getstream';
+
 export interface AuthUser {
   chatToken: string;
   feedToken: string;
@@ -23,20 +25,11 @@ export interface FeedUser {
 export interface Attachment {
   type: string;
   url: string;
+  // url: { duration: string; file: string }; // For video attachments?
 }
 
-export interface PostActivity {
-  id: string;
-  actor: string;
-  verb: string;
-  object: string;
-  target?: string;
-  time: string;
-  foreign_id?: string;
-  latest_reactions?: Record<string, unknown[]>;
-  latest_reactions_extra?: Record<string, unknown>;
-  own_reactions?: Record<string, unknown[]>;
-  reaction_counts?: Record<string, number>;
+export interface PostActivity extends FlatActivity<DefaultGenerics> {
+  attachments: Attachment[];
   photo?: string;
   videoAssetId?: string;
   videoPlaybackId?: string;

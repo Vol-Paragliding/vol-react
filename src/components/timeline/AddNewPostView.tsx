@@ -1,13 +1,14 @@
 import { useState } from "react";
-
 import { useFeed } from "../../contexts/feed/useFeed";
+// import { parseIgcFile, extractFlightStatistics } from "../../utils/igcParser";
 import styles from "./AddNewPost.module.css";
+import { Attachment } from "../../interfaces/types";
 
 const AddNewPostView = () => {
   const { addActivity, feedUser } = useFeed();
   const [text, setText] = useState("");
   const [error, setError] = useState("");
-  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -20,42 +21,49 @@ const AddNewPostView = () => {
           "File: ",
           file,
           file.name.toLowerCase().endsWith(".igc") ||
+            file.name.toLowerCase().endsWith(".kmz") ||
             file.type.startsWith("image/") ||
             file.type.startsWith("video/")
         );
         if (
+          file.name.toLowerCase().endsWith(".kmz") ||
           file.name.toLowerCase().endsWith(".igc") ||
           file.type.startsWith("image/") ||
           file.type.startsWith("video/")
         ) {
           try {
-            let response;
-            if (file.type.startsWith("image/")) {
-              response = await feedUser?.client.images.upload(file);
-            } else {
-              response = await feedUser?.client.files.upload(file);
+            let attachment = {};
+            if (file.name.toLowerCase().endsWith(".kmz")) {
+              const url = await feedUser?.client.files.upload(file);
+              attachment = { type: "kmz", url: url };
             }
 
-            const newAttachment: unknown = {
-              type: file.type.startsWith("image/")
-                ? "image"
-                : file.type.startsWith("video/")
-                ? "video"
-                : "file",
-              url: response?.file,
-            };
-
-            setAttachments((currentAttachments: File[]) => [
-              ...currentAttachments,
-              newAttachment as File,
-            ]);
+            else if (file.name.toLowerCase().endsWith(".igc")) {
+              // const igcContent = await file.text();
+              // const igcData = parseIgcFile(igcContent);
+              // console.log("IGC Data: ", igcData);
+              // const flightStats = extractFlightStatistics(igcData);
+              // console.log("Flight Stats: ", flightStats);
+              // attachment = { type: "igc", data: flightStats };
+              const url = await feedUser?.client.files.upload(file);
+              attachment = { type: "igc", url: url };
+            } else {
+              const response = file.type.startsWith("image/")
+                ? await feedUser?.client.images.upload(file)
+                : await feedUser?.client.files.upload(file);
+              attachment = {
+                type: file.type.startsWith("image/") ? "image" : "video",
+                url: response?.file,
+              };
+            }
+            setAttachments((current) => [...current, attachment] as Attachment[]);
           } catch (error) {
-            console.error("Error uploading file: ", error);
-            setError("Failed to upload file. Please try again later.");
+            console.error("Error processing file: ", error);
+            setError("Failed to process file. Please try again later.");
           }
         } else {
           setError(
-            "Unsupported file type. Please upload an image, video, or IGC file."
+            "Unsupported file type. Please upload an IGC, image, or video file."
           );
         }
       }
@@ -85,7 +93,7 @@ const AddNewPostView = () => {
       setText("");
       setAttachments([]);
     } catch (error) {
-      console.error("Error adding activity:", error);
+      console.error("Error adding activity: ", error);
       setError("Failed to add activity. Please try again later.");
     }
   };
@@ -108,7 +116,7 @@ const AddNewPostView = () => {
           type="file"
           multiple
           onChange={handleFileChange}
-          accept=".igc,image/*,video/*"
+          // accept=".igc,image/*,video/*"
         />
         <button type="submit" className={styles.submitButton}>
           Post

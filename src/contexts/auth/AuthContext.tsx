@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } else {
       sessionStorage.removeItem("authUser");
     }
-  }, [authState.authUser]);
+  }, [authState, authState.authUser]);
 
   return (
     <AuthContext.Provider value={{ authState, dispatch }}>

@@ -1,4 +1,10 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 import {
   connect,
   DefaultGenerics,
@@ -8,21 +14,22 @@ import {
 } from "getstream";
 
 import { useAuth } from "../auth/useAuth";
+import { PostActivity } from "../../interfaces/types";
 
 const apiKey = import.meta.env.VITE_REACT_APP_API_KEY || "";
 const appId = import.meta.env.VITE_APP_STREAM_APP_ID || "";
 
 interface FeedContextType {
-  feedUser: StreamUser | null;
-  setFeedUser: React.Dispatch<React.SetStateAction<StreamUser | null>>;
+  feedUser: StreamUser<DefaultGenerics> | null;
+  setFeedUser: React.Dispatch<
+    React.SetStateAction<StreamUser<DefaultGenerics> | null>
+  >;
   feedClient: StreamFeed<DefaultGenerics> | null;
   viewMode: string;
   setViewMode: React.Dispatch<React.SetStateAction<string>>;
-  userActivities: NewActivity<DefaultGenerics>[];
-  setUserActivities: React.Dispatch<
-    React.SetStateAction<NewActivity<DefaultGenerics>[]>
-  >;
-  addActivity: (newActivity: NewActivity) => Promise<void>;
+  userActivities: PostActivity[];
+  setUserActivities: React.Dispatch<React.SetStateAction<PostActivity[]>>;
+  addActivity: (newActivity: NewActivity<DefaultGenerics>) => Promise<void>;
   getActivities: () => Promise<void>;
 }
 
@@ -36,12 +43,10 @@ export const FeedProvider = ({ children }: { children: React.ReactNode }) => {
   const [feedClient, setFeedClient] =
     useState<StreamFeed<DefaultGenerics> | null>(null);
   const [viewMode, setViewMode] = useState("");
-  const [userActivities, setUserActivities] = useState<
-    NewActivity<DefaultGenerics>[]
-  >([]);
+  const [userActivities, setUserActivities] = useState<PostActivity[]>([]);
 
   useEffect(() => {
-    if (authState.isAuthenticated && authState.authUser) {
+    if (authState.isAuthenticated && authState.authUser && !feedClient) {
       const client = connect(apiKey, authState.authUser.feedToken, appId);
       const userFeed = client.feed("user", authState.authUser.userId);
 
@@ -57,9 +62,8 @@ export const FeedProvider = ({ children }: { children: React.ReactNode }) => {
           setFeedUser(userResponse);
 
           const activityResponse = await userFeed.get({ limit: 10 });
-          setUserActivities(
-            activityResponse.results as NewActivity<DefaultGenerics>[]
-          );
+          const activities = activityResponse.results as PostActivity[];
+          setUserActivities(activities);
         } catch (error) {
           console.error("Error fetching user and activities: ", error);
         }
@@ -67,43 +71,53 @@ export const FeedProvider = ({ children }: { children: React.ReactNode }) => {
 
       fetchInitialData();
     }
-  }, [authState]);
+  }, [authState, feedClient]);
 
-  const addActivity = async (newActivity: NewActivity) => {
-    if (!feedClient) return;
-    try {
-      console.log("Adding activity: ", newActivity);
-      await feedClient.addActivity(newActivity);
-      setUserActivities((prevActivities) => [newActivity, ...prevActivities]);
-    } catch (error) {
-      console.error("Error adding activity: ", error);
-      throw error;
-    }
-  };
+  const addActivity = useCallback(
+    async (newActivity: NewActivity<DefaultGenerics>) => {
+      if (!feedClient) return;
+      try {
+        const postActivity = (await feedClient.addActivity(
+          newActivity
+        )) as PostActivity;
+        setUserActivities((prevActivities) => [
+          postActivity,
+          ...prevActivities,
+        ]);
+      } catch (error) {
+        console.error("Error adding activity: ", error);
+        throw error;
+      }
+    },
+    [feedClient]
+  );
 
-  const getActivities = async () => {
+  const getActivities = useCallback(async () => {
     if (!feedClient) return;
     try {
       const response = await feedClient.get({ limit: 10 });
-      const activities = response.results as NewActivity<DefaultGenerics>[];
+      const activities = response.results as PostActivity[];
       setUserActivities(activities);
     } catch (error) {
       console.error("Error fetching user activities: ", error);
       throw error;
     }
-  };
+  }, [feedClient]);
 
-  const contextValue: FeedContextType = {
-    feedUser,
-    setFeedUser,
-    feedClient,
-    viewMode,
-    setViewMode,
-    userActivities,
-    setUserActivities,
-    addActivity,
-    getActivities,
-  };
+  const contextValue = useMemo(
+    () => ({
+      feedUser,
+      setFeedUser,
+      feedClient,
+      viewMode,
+      setViewMode,
+      userActivities,
+      setUserActivities,
+      addActivity,
+      getActivities,
+    }),
+    [feedUser, feedClient, viewMode, userActivities, addActivity, getActivities]
+  );
 
   return (
     <FeedContext.Provider value={contextValue}>{children}</FeedContext.Provider>
