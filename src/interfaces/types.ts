@@ -22,11 +22,36 @@ export interface FeedUser {
   data: UserData;
 }
 
-export interface Attachment {
+// export interface Attachment {
+//   type: string;
+//   url: string;
+//   // url: { duration: string; file: string }; // For igc attachments
+// }
+
+interface AttachmentBase {
   type: string;
-  url: string;
-  // url: { duration: string; file: string }; // For video attachments?
 }
+
+interface ImageAttachment extends AttachmentBase {
+  type: "image";
+  url: string;
+}
+
+interface VideoAttachment extends AttachmentBase {
+  type: "video";
+  url: string;
+}
+
+export interface IGCFileAttachment extends AttachmentBase {
+  type: "igc";
+  url: {
+    duration: string;
+    file: string;
+  };
+}
+
+export type Attachment = ImageAttachment | VideoAttachment | IGCFileAttachment;
+
 
 export interface PostActivity extends FlatActivity<DefaultGenerics> {
   attachments: Attachment[];

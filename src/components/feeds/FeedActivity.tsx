@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-import { PostActivity } from "../../interfaces/types";
+import { PostActivity, IGCFileAttachment } from "../../interfaces/types";
 import { parseIgcFile, FlightData, Fix } from "../../utils/igcParser";
 import styles from "./Feeds.module.css";
 
@@ -13,8 +13,6 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
 
   useEffect(() => {
     let isComponentMounted = true;
-    console.log("FeedActivityLeaf useEffect called for activity:", activity.id);
-
     const initMap = (flightPath: [number, number][]) => {
       if (
         !isComponentMounted ||
@@ -23,38 +21,37 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
         !mapRef.current
       )
         return;
-      console.log("Initializing map for activity:", activity.id);
-      const mapInstance: L.Map = L.map(mapRef.current).setView(
+      const mapInstance: L.Map = L.map(mapRef.current!).setView(
         flightPath[0],
         13
       );
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(mapInstance);
       L.polyline(flightPath, { color: "blue" }).addTo(mapInstance);
       setMapInitialized(true);
     };
 
     const fetchAndDisplayFlightPath = async () => {
-      if (activity.attachments?.some((att) => att.type === "igc")) {
-        const igcAttachment = activity.attachments.find(
-          (att) => att.type === "igc"
-        );
-        if (igcAttachment) {
-          try {
-            const response = await fetch(igcAttachment.url);
-            const igcContent = await response.text();
-            const flightData: FlightData = parseIgcFile(igcContent) as FlightData;
-            const flightPath: [number, number][] = flightData.fixes.map((fix: Fix) => [
-              fix.latitude,
-              fix.longitude,
-            ]);
-            initMap(flightPath);
-          } catch (error) {
-            console.error("Error in fetchAndDisplayFlightPath:", error);
-            setMapError("Failed to load flight data.");
+      const igcAttachment = activity.attachments.find(
+        (att): att is IGCFileAttachment => att.type === "igc"
+      );
+
+      if (igcAttachment) {
+        try {
+          const response = await fetch(igcAttachment.url.file);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
           }
+          const igcContent = await response.text();
+          if (igcContent.startsWith("<!doctype html>")) {
+            throw new Error("Received HTML content instead of IGC file");
+          }
+          const flightData: FlightData = parseIgcFile(igcContent) as FlightData;
+          const flightPath: [number, number][] = flightData.fixes.map(
+            (fix: Fix) => [fix.latitude, fix.longitude]
+          );
+          initMap(flightPath);
+        } catch (error) {
+          console.error("Error in fetchAndDisplayFlightPath:", error);
+          setMapError("Failed to load flight data.");
         }
       }
     };
@@ -65,7 +62,6 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
 
     return () => {
       isComponentMounted = false;
-      console.log("Cleaning up map for activity:", activity.id);
     };
   }, [activity, isMapInitialized]);
 
@@ -111,16 +107,6 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
               />
               Your browser does not support the video tag or the video format.
             </video>
-          )}
-
-          {attachment.type === "file" && (
-            <a
-              href={attachment.url}
-              download
-              className={styles.attachmentLink}
-            >
-              Download IGC File
-            </a>
           )}
         </div>
       ))}
