@@ -48,6 +48,7 @@ export const EditProfileView = () => {
         fileName,
         mimeType,
         selectedFile,
+        authState.authUser?.userId || "",
         authState.authUser?.feedToken || ""
       );
     } catch (error) {

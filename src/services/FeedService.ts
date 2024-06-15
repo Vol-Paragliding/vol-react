@@ -356,8 +356,8 @@ export const addLike = async (activityId: string, feedToken: string) => {
   }
 };
 
-export const uploadImage = async (fileName: string, mimeType: string, imageData: Blob, feedToken: string) => {
-  if (!isValidRequest("", feedToken)) return Promise.reject("Invalid feed token.");
+export const uploadImage = async (fileName: string, mimeType: string, imageData: Blob, userId: string, feedToken: string) => {
+  if (!isValidRequest(userId, feedToken)) return Promise.reject("Invalid feed token.");
 
   const url = getImagesUrl(BASE_URLS.usEast);
   const formData = new FormData();

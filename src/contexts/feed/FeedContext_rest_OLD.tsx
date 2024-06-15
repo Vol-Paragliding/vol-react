@@ -155,6 +155,7 @@ export const FeedProvider = ({ children }: { children: React.ReactNode }) => {
         fileName,
         mimeType,
         imageData,
+        authState.authUser?.userId || "",
         authState.authUser?.feedToken || ""
       ),
     deleteImage: (cdnUrl: string) =>

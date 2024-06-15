@@ -37,7 +37,7 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
     };
 
     const fetchAndDisplayFlightPath = async () => {
-      if (activity.attachments.some((att) => att.type === "igc")) {
+      if (activity.attachments?.some((att) => att.type === "igc")) {
         const igcAttachment = activity.attachments.find(
           (att) => att.type === "igc"
         );
