@@ -21,10 +21,42 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
         !mapRef.current
       )
         return;
-      const mapInstance: L.Map = L.map(mapRef.current!).setView(
-        flightPath[0],
-        13
+      const mapInstance: L.Map = L.map(mapRef.current!, {
+        zoomControl: true,
+        scrollWheelZoom: false,
+        // doubleClickZoom: false,
+        touchZoom: false,
+        // dragging: false,
+      }).setView(flightPath[0], 13);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OSM",
+      }).addTo(mapInstance);
+      mapInstance.fitBounds(flightPath);
+
+      const attributionControl = document.querySelector(
+        ".leaflet-control-attribution"
       );
+      if (attributionControl) {
+        (attributionControl as HTMLElement).style.opacity = "0.5";
+        (attributionControl as HTMLElement).style.fontSize = "10px";
+        (attributionControl as HTMLElement)
+          .querySelectorAll("a")
+          .forEach((a: Element) => {
+            (a as HTMLElement).style.color = "rgba(0, 0, 0, 0.5)";
+            (a as HTMLElement).style.textDecoration = "none";
+          });
+        const leafletLink = (attributionControl as HTMLElement).querySelector(
+          'a[href="https://leafletjs.com"]'
+        );
+        const spanSeparator = (attributionControl as HTMLElement).querySelector(
+          'span[aria-hidden="true"]'
+        );
+        if (leafletLink && spanSeparator) {
+          (leafletLink as HTMLElement).style.display = "none";
+          (spanSeparator as HTMLElement).style.display = "none";
+        }
+      }
       L.polyline(flightPath, { color: "blue" }).addTo(mapInstance);
       setMapInitialized(true);
     };
