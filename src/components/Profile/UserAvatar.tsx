@@ -1,23 +1,20 @@
 import React from "react";
 
-import { useFeed } from "../../contexts/feed/useFeed";
 import styles from "./Profile.module.css";
 
-export const UserAvatar: React.FC = () => {
-  const { feedUser, viewMode, setViewMode } = useFeed();
+interface UserAvatarProps {
+  url: string;
+  onClick?: () => void;
+}
 
-  const handleImageClick = () => {
-    setViewMode(viewMode === "profile" ? "" : "profile");
-  };
-
+export const UserAvatar: React.FC<UserAvatarProps> = ({
+  url,
+  onClick,
+}) => {
   return (
-    <div className={styles.profileImageContainer} onClick={handleImageClick}>
-      {feedUser?.data?.profilePicture ? (
-        <img
-          src={feedUser?.data.profilePicture as string}
-          alt="Profile"
-          className={styles.profilePic}
-        />
+    <div className={styles.profileImageContainer} onClick={onClick}>
+      {url ? (
+        <img src={url} alt="Profile" className={styles.profilePic} />
       ) : (
         <div className={styles.placeholderIcon}>
           <svg

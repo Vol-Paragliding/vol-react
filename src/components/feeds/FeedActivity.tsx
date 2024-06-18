@@ -4,6 +4,8 @@ import "leaflet/dist/leaflet.css";
 
 import { PostActivity, IGCFileAttachment } from "../../interfaces/types";
 import { parseIgcFile, FlightData, Fix } from "../../utils/igcParser";
+import { UserAvatar } from "../profile/UserAvatar";
+import { formatDateTime } from "../utils/dateUtils";
 import styles from "./Feeds.module.css";
 
 const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
@@ -22,11 +24,11 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
       )
         return;
       const mapInstance: L.Map = L.map(mapRef.current!, {
-        zoomControl: true,
+        zoomControl: false,
         scrollWheelZoom: false,
-        // doubleClickZoom: false,
+        doubleClickZoom: false,
         touchZoom: false,
-        // dragging: false,
+        dragging: false,
       }).setView(flightPath[0], 13);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -62,6 +64,8 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
     };
 
     const fetchAndDisplayFlightPath = async () => {
+      if (!activity.attachments) return;
+
       const igcAttachment = activity.attachments.find(
         (att): att is IGCFileAttachment => att.type === "igc"
       );
@@ -101,10 +105,18 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
     ? activity.attachments
     : [];
 
+  const formattedTime = formatDateTime(activity.time);
+  const avatarUrl = activity?.actor.data?.profilePicture ?? "";
+
+  console.log("activity", activity);
+
   return (
     <div className={styles.activityContainer}>
-      <h3 className={styles.activityTitle}>{activity.verb}</h3>
-      <p className={styles.activityDescription}>{activity.object as string}</p>
+      <div className={styles.activityHeader}>
+        <UserAvatar url={typeof avatarUrl === "string" ? avatarUrl : ""} />
+        <span className={styles.activityTimestamp}>{formattedTime}</span>
+        <h3 className={styles.activityTitle}>{activity.verb}</h3>
+      </div>
       {attachments.map((attachment, index) => (
         <div key={index} className={styles.attachment}>
           {attachment.type === "igc" && (
@@ -142,7 +154,11 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
           )}
         </div>
       ))}
-      <span className={styles.activityTimestamp}>{activity.time}</span>
+      <div className={styles.activityFooter}>
+        <p className={styles.activityDescription}>
+          {activity.object as string}
+        </p>
+      </div>
     </div>
   );
 };

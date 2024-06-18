@@ -180,8 +180,9 @@
   top: 50px;
   left: 0;
   width: 400px;
-  z-index: 1;
+  z-index: 999;
   background-color: #fff;
+  /* pointer-events: auto; */
 }
 
 @keyframes slideOutToLeft {

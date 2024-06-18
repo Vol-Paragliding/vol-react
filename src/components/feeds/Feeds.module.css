@@ -9,10 +9,10 @@
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.activityContainer:hover {
+/* .activityContainer:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
+} */
 
 .activityTitle {
   margin: 0;
@@ -55,9 +55,9 @@
   text-decoration: none;
 }
 
-.attachmentLink:hover {
+/* .attachmentLink:hover {
   text-decoration: underline;
-}
+} */
 
 .leafletMap {
   width: 100%;

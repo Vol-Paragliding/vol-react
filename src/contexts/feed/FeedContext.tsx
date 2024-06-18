@@ -79,7 +79,7 @@ export const FeedProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const postActivity = (await feedClient.addActivity(
           newActivity
-        )) as PostActivity;
+        )) as unknown as PostActivity;
         setUserActivities((prevActivities) => [
           postActivity,
           ...prevActivities,
