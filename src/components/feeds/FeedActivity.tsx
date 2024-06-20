@@ -23,7 +23,7 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
         <Attachment key={index} attachment={attachment} />
       ))}
       <ActivityFooter
-        actorName={String(activity.actor.data?.name)}
+        actorName={String(activity.actor.id)}
         object={activity.object as string}
         replyCount={activity.reactionCounts?.replyCount ?? 0}
       />

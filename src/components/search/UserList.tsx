@@ -20,12 +20,10 @@ const UserList: React.FC<UserListProps> = ({
       {users.map((user) => (
         <div className={styles.userCard} key={user.id}>
           <div className={styles.userListAvatar}>
-            <UserAvatar url={String(user.image || "")} />
+            <UserAvatar url={String(user.profilePicture || "")} />
           </div>
           <div className={styles.userInfo}>
-            {/* {console.log("users", users)} */}
-            {/* TODO: render full name, which does not exist on user */}
-            <h2>{user.name || user.id}</h2>
+            <h2>{String(user.fullname || user.id)}</h2>
             <p>{user.id}</p>
           </div>
         </div>

@@ -17,7 +17,7 @@ const ActivityHeader: React.FC<{ actor: EnrichedUser; time: string }> = ({
         <UserAvatar url={String(actor?.data?.profilePicture ?? "")} />
       </div>
       <span className={styles.activityHeaderName}>
-        {String(actor.data?.name) ?? "Unknown"}
+        {String(actor.id) ?? "Unknown"}
       </span>
       <span className={styles.activityTimestamp}>{formattedTime}</span>
     </div>

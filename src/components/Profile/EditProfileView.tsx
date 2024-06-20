@@ -4,21 +4,23 @@ import { useAuth } from "../../contexts/auth/useAuth";
 import { useFeed } from "../../contexts/feed/useFeed";
 import { UserData } from "../../interfaces/types";
 import { updateUser, uploadImage } from "../../services/FeedService";
+import { useChat } from "../../contexts/chat/useChat";
 import styles from "./Profile.module.css";
 
 export const EditProfileView = () => {
   const { authState } = useAuth();
   const { feedUser, setFeedUser, setViewMode } = useFeed();
+  const { chatClient } = useChat();
 
   const [userData, setUserData] = useState<UserData>({
-    firstname: feedUser?.data?.firstname as string || "",
-    lastname: feedUser?.data?.lastname as string || "",
-    aboutMe: feedUser?.data?.aboutMe as string || "",
-    location: feedUser?.data?.location as string || "",
+    firstname: (feedUser?.data?.firstname as string) || "",
+    lastname: (feedUser?.data?.lastname as string) || "",
+    aboutMe: (feedUser?.data?.aboutMe as string) || "",
+    location: (feedUser?.data?.location as string) || "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageSrc, setImageSrc] = useState<string | null | undefined>(
-    feedUser?.data?.profilePicture as string | null | undefined
+    (feedUser?.data?.profilePicture as string) || null
   );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -75,6 +77,18 @@ export const EditProfileView = () => {
         authState.authUser?.userId || "",
         authState.authUser?.feedToken || ""
       );
+
+      const userId = authState.authUser?.userId;
+      if (chatClient && userId) {
+        await chatClient.upsertUser({
+          id: userId,
+          name: userId,
+          fullname: `${updatedUserData.firstname} ${updatedUserData.lastname}`,
+          ...updatedUserData,
+        });
+      } else {
+        console.error("Chat client is not initialized or userId is undefined.");
+      }
 
       setFeedUser(updatedUser);
       setViewMode("profile");

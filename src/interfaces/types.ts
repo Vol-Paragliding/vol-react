@@ -7,6 +7,15 @@ export interface AuthUser {
   username: string;
 }
 
+export interface UserData {
+  fullname?: string;
+  firstname?: string;
+  lastname?: string;
+  aboutMe?: string;
+  location?: string;
+  profilePicture?: string;
+}
+
 interface BaseAttachment {
   type: string;
 }
