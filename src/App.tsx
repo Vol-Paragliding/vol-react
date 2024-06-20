@@ -11,6 +11,7 @@ import StartView from "./components/auth/StartView";
 import NotFoundView from "./components/notFound/NotFoundView";
 import { useAuth } from "./contexts/auth/useAuth";
 import { FeedProvider } from "./contexts/feed/FeedContext";
+import { ChatProvider } from "./contexts/chat/ChatContext";
 import "./App.css";
 
 function App() {
@@ -29,10 +30,12 @@ function App() {
           <Route
             path="/home/*"
             element={
-              <FeedProvider>
-                <HeaderView />
-                <HomeView />
-              </FeedProvider>
+              <ChatProvider>
+                <FeedProvider>
+                  <HeaderView />
+                  <HomeView />
+                </FeedProvider>
+              </ChatProvider>
             }
           />
         )}

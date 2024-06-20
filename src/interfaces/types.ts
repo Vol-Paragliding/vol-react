@@ -1,5 +1,12 @@
 import { DefaultGenerics, EnrichedActivity, EnrichedUser } from 'getstream';
 
+export interface AuthUser {
+  chatToken: string;
+  feedToken: string;
+  userId: string;
+  username: string;
+}
+
 interface BaseAttachment {
   type: string;
 }
