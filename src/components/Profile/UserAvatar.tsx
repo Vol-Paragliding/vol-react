@@ -1,5 +1,4 @@
 import React from "react";
-
 import styles from "./Profile.module.css";
 
 interface UserAvatarProps {
@@ -7,10 +6,7 @@ interface UserAvatarProps {
   onClick?: () => void;
 }
 
-export const UserAvatar: React.FC<UserAvatarProps> = ({
-  url,
-  onClick,
-}) => {
+export const UserAvatar: React.FC<UserAvatarProps> = ({ url, onClick }) => {
   return (
     <div className={styles.profileImageContainer} onClick={onClick}>
       {url ? (

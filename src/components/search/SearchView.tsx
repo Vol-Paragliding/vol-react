@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useChat } from "../../contexts/chat/useChat";
 import { UserResponse } from "stream-chat";
+
+import { useChat } from "../../contexts/chat/useChat";
 import SearchInput from "./SearchInput";
 import UserList from "./UserList";
+import styles from "./SearchView.module.css";
+
+const USERS_PER_PAGE = 10;
 
 const SearchView: React.FC = () => {
   const { chatClient } = useChat();
@@ -14,45 +18,50 @@ const SearchView: React.FC = () => {
   const [users, setUsers] = useState<UserResponse[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const queryUsers = useCallback(
+    async (filter: object, sort: object, options: object) => {
+      if (!chatClient) {
+        return null;
+      }
+
+      try {
+        return await chatClient.queryUsers(filter, sort, options);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        setError("Error fetching users");
+        return null;
+      }
+    },
+    [chatClient]
+  );
+
   const getAllUsers = useCallback(async () => {
     if (!chatClient || !chatClient.user) {
       setError("Chat client not initialized or user not connected");
       return;
     }
 
-    const filter = {
-      id: { $ne: chatClient.userID || "" },
-    };
+    const filter = { id: { $ne: chatClient.userID || "" } };
+    const sort = { last_active: 1 as const };
+    const options = { limit: USERS_PER_PAGE, offset: 0 };
 
-    const sort = { last_active: -1 as const };
-    const options = { limit: 10, offset: 0 };
+    const response = debouncedTerm
+      ? await queryUsers(
+          { username: { $autocomplete: debouncedTerm } },
+          sort,
+          options
+        )
+      : await queryUsers(filter, sort, options);
 
-    try {
-      let response;
-      if (debouncedTerm === "") {
-        response = await chatClient.queryUsers(filter, sort, options);
-      } else {
-        response = await chatClient.queryUsers({
-          username: { $autocomplete: debouncedTerm },
-        });
-      }
-
-      console.log("Response from queryUsers:", response);
-
-      if (response.users.length) {
-        setUsers(response.users);
-        setOffset(10);
-        setRenderLoadMore(response.users.length === 10);
-      } else {
-        setRenderLoadMore(false);
-      }
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      setError("Error fetching users");
-    } finally {
-      setLoading(false);
+    if (response) {
+      setUsers(response.users);
+      setOffset(USERS_PER_PAGE);
+      setRenderLoadMore(response.users.length === USERS_PER_PAGE);
+    } else {
+      setRenderLoadMore(false);
     }
-  }, [chatClient, debouncedTerm]);
+    setLoading(false);
+  }, [chatClient, debouncedTerm, queryUsers]);
 
   useEffect(() => {
     if (chatClient && chatClient.user) {
@@ -80,43 +89,35 @@ const SearchView: React.FC = () => {
       return;
     }
 
-    const filter = {
-      id: { $ne: chatClient.userID || "" },
-    };
+    const filter = { id: { $ne: chatClient.userID || "" } };
     const sort = { last_active: -1 as const };
-    const options = { offset: offset + 10, limit: 10 };
+    const options = { offset: offset + USERS_PER_PAGE, limit: USERS_PER_PAGE };
 
-    try {
-      const response = await chatClient.queryUsers(filter, sort, options);
-      setOffset((prevOffset) => prevOffset + 10);
-      console.log("Response from queryUsers for more users:", response);
+    const response = await queryUsers(filter, sort, options);
 
-      if (response.users.length) {
-        setUsers((prevUsers) => [...prevUsers, ...response.users]);
-        setRenderLoadMore(response.users.length === 10);
-      } else {
-        setRenderLoadMore(false);
-      }
-    } catch (error) {
-      console.error("Error fetching more users:", error);
-      setError("Error fetching more users");
+    if (response) {
+      setUsers((prevUsers) => [...prevUsers, ...response.users]);
+      setOffset((prevOffset) => prevOffset + USERS_PER_PAGE);
+      setRenderLoadMore(response.users.length === USERS_PER_PAGE);
+    } else {
+      setRenderLoadMore(false);
     }
-  }, [chatClient, offset]);
+  }, [chatClient, offset, queryUsers]);
 
   return (
-    <div className="User-list">
-      <h1 className="user-list-contacts_header">People Search</h1>
+    <div className={styles.userList}>
+      <h1 className={styles.userListHeader}>Search</h1>
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <>
+        <div className={styles.searchContainer}>
           <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           <UserList
             users={users}
             renderLoadMore={renderLoadMore}
             handleGetMoreUsersClick={handleGetMoreUsersClick}
           />
-        </>
+        </div>
       )}
       {error && <div className="error">{error}</div>}
     </div>

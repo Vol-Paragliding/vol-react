@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./SearchView.module.css";
 
 interface SearchInputProps {
   searchTerm: string;
@@ -11,12 +12,12 @@ const SearchInput: React.FC<SearchInputProps> = ({
 }) => {
   return (
     <input
-      className="search_form"
+      className={styles.searchForm}
       autoFocus
       type="text"
       name="searchTerm"
       value={searchTerm}
-      placeholder="Search all users..."
+      placeholder="Search users..."
       onChange={(e) => setSearchTerm(e.target.value)}
     />
   );
