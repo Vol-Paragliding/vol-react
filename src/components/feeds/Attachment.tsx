@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-import { Attachment as AttachmentType } from "../../interfaces/types";
+import { AttachmentType } from "../../interfaces/types";
 import { parseIgcFile, FlightData, Fix } from "../../utils/igcParser";
 import styles from "./Feeds.module.css";
 
@@ -43,9 +43,9 @@ const Attachment: React.FC<{ attachment: AttachmentType }> = ({
         (attributionControl as HTMLElement).style.fontSize = "10px";
         (attributionControl as HTMLElement)
           .querySelectorAll("a")
-          .forEach((a: Element) => {
-            (a as HTMLElement).style.color = "rgba(0, 0, 0, 0.5)";
-            (a as HTMLElement).style.textDecoration = "none";
+          .forEach((a: HTMLElement) => {
+            a.style.color = "rgba(0, 0, 0, 0.5)";
+            a.style.textDecoration = "none";
           });
         const leafletLink = (attributionControl as HTMLElement).querySelector(
           'a[href="https://leafletjs.com"]'
@@ -94,39 +94,22 @@ const Attachment: React.FC<{ attachment: AttachmentType }> = ({
     };
   }, [attachment, isMapInitialized]);
 
-  if (attachment.type === "igc") {
-    return (
-      <div className={styles.mapContainer}>
-        <div ref={mapRef} className={styles.leafletMap}></div>
-      </div>
-    );
-  } else if (attachment.type === "image") {
-    return (
-      <img
-        src={attachment.url}
-        alt="Attachment"
-        className={styles.attachmentImage}
-      />
-    );
-  } else if (attachment.type === "video") {
-    return (
-      <video
-        controls
-        className={styles.attachmentVideo}
-        onError={(e) => console.log("Video cannot be loaded", e)}
-      >
-        <source src={attachment.url} type="video/mp4" />
-        <source src={attachment.url.replace(".mp4", ".ogg")} type="video/ogg" />
-        <source
-          src={attachment.url.replace(".mp4", ".webm")}
-          type="video/webm"
+  return (
+    <>
+      {attachment.type === "igc" && (
+        <div className={styles.mapContainer}>
+          <div ref={mapRef} className={styles.leafletMap}></div>
+        </div>
+      )}
+      {attachment.type === "image" && (
+        <img
+          src={attachment.url}
+          alt="Attachment"
+          className={styles.attachmentImage}
         />
-        Your browser does not support the video tag or the video format.
-      </video>
-    );
-  }
-
-  return null;
+      )}
+    </>
+  );
 };
 
 export default Attachment;

@@ -4,6 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { StreamApp } from "react-activity-feed";
 
 import HeaderView from "./components/header/HeaderView";
 import HomeView from "./components/home/HomeView";
@@ -13,6 +14,9 @@ import { useAuth } from "./contexts/auth/useAuth";
 import { FeedProvider } from "./contexts/feed/FeedContext";
 import { ChatProvider } from "./contexts/chat/ChatContext";
 import "./App.css";
+
+const apiKey = import.meta.env.VITE_REACT_APP_API_KEY || "";
+const appId = import.meta.env.VITE_APP_STREAM_APP_ID || "";
 
 function App() {
   const { authState } = useAuth();
@@ -30,12 +34,18 @@ function App() {
           <Route
             path="/home/*"
             element={
-              <ChatProvider>
-                <FeedProvider>
-                  <HeaderView />
-                  <HomeView />
-                </FeedProvider>
-              </ChatProvider>
+              <StreamApp
+                apiKey={apiKey}
+                appId={appId}
+                token={authState.authUser.feedToken}
+              >
+                <ChatProvider>
+                  <FeedProvider>
+                    <HeaderView />
+                    <HomeView />
+                  </FeedProvider>
+                </ChatProvider>
+              </StreamApp>
             }
           />
         )}

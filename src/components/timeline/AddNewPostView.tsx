@@ -1,14 +1,20 @@
 import { useState } from "react";
+// import {
+//   StatusUpdateForm,
+//   // NotificationDropdown,
+// } from "react-activity-feed";
+import "react-activity-feed/dist/index.css";
+
 import { useFeed } from "../../contexts/feed/useFeed";
-// import { parseIgcFile, extractFlightStatistics } from "../../utils/igcParser";
+import { parseIgcFile, extractFlightStatistics } from "../../utils/igcParser";
 import styles from "./AddNewPost.module.css";
-import { Attachment } from "../../interfaces/types";
+import { AttachmentType } from "../../interfaces/types";
 
 const AddNewPostView = () => {
   const { addActivity, feedUser } = useFeed();
   const [text, setText] = useState("");
   const [error, setError] = useState("");
-  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [attachments, setAttachments] = useState<AttachmentType[]>([]);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -17,46 +23,46 @@ const AddNewPostView = () => {
       const files = Array.from(event.target.files);
 
       for (const file of files) {
-        console.log(
-          "File: ",
-          file,
-          file.name.toLowerCase().endsWith(".igc") ||
-            file.name.toLowerCase().endsWith(".kmz") ||
-            file.type.startsWith("image/") ||
-            file.type.startsWith("video/")
-        );
         if (
-          file.name.toLowerCase().endsWith(".kmz") ||
           file.name.toLowerCase().endsWith(".igc") ||
           file.type.startsWith("image/") ||
           file.type.startsWith("video/")
         ) {
           try {
-            let attachment = {};
-            if (file.name.toLowerCase().endsWith(".kmz")) {
-              const url = await feedUser?.client.files.upload(file);
-              attachment = { type: "kmz", url: url };
-            }
-
-            else if (file.name.toLowerCase().endsWith(".igc")) {
-              // const igcContent = await file.text();
-              // const igcData = parseIgcFile(igcContent);
-              // console.log("IGC Data: ", igcData);
-              // const flightStats = extractFlightStatistics(igcData);
-              // console.log("Flight Stats: ", flightStats);
-              // attachment = { type: "igc", data: flightStats };
-              const url = await feedUser?.client.files.upload(file);
-              attachment = { type: "igc", url: url };
+            let attachment: AttachmentType = {} as AttachmentType;
+            if (file.name.toLowerCase().endsWith(".igc")) {
+              const igcContent = await file.text();
+              const igcData = parseIgcFile(igcContent);
+              console.log("IGC Data: ", igcData);
+              if (igcData) {
+                const flightStats = extractFlightStatistics(igcData);
+                console.log("Flight Stats: ", flightStats);
+                const url = await feedUser?.client.files.upload(file);
+                if (url?.duration && url.file && flightStats) {
+                  attachment = {
+                    type: "igc",
+                    url: {
+                      duration: url.duration || "unknown",
+                      file: url.file,
+                    },
+                    data: flightStats,
+                  };
+                }
+              } else {
+                setError("Failed to parse IGC data.");
+              }
             } else {
               const response = file.type.startsWith("image/")
                 ? await feedUser?.client.images.upload(file)
                 : await feedUser?.client.files.upload(file);
               attachment = {
                 type: file.type.startsWith("image/") ? "image" : "video",
-                url: response?.file,
+                url: response?.file ?? "",
               };
             }
-            setAttachments((current) => [...current, attachment] as Attachment[]);
+            setAttachments(
+              (current) => [...current, attachment] as AttachmentType[]
+            );
           } catch (error) {
             console.error("Error processing file: ", error);
             setError("Failed to process file. Please try again later.");
@@ -116,7 +122,6 @@ const AddNewPostView = () => {
           type="file"
           multiple
           onChange={handleFileChange}
-          // accept=".igc,image/*,video/*"
         />
         <button type="submit" className={styles.submitButton}>
           Post

@@ -10,18 +10,20 @@
   flex-direction: column;
   background: #fff;
   border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 .activityHeader {
   display: flex;
   align-items: center;
   background: #f5f5f5;
-  padding: 2px 10px;
+  padding: 10px;
   border-radius: 8px 8px 0 0;
 }
 
 .activityHeaderName {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   margin-left: 10px;
   color: #333;
@@ -31,6 +33,30 @@
   margin-left: auto;
   font-size: 0.85rem;
   color: #666;
+}
+
+.statsContainer {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+.statsItem {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.statsLabel {
+  font-size: 0.9rem;
+  color: #666;
+  margin-right: 5px;
+}
+
+.statsValue {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
 }
 
 .attachment {
@@ -69,7 +95,8 @@
   margin-right: 5px;
 }
 
-.activityDescription, .reactionCount {
+.activityDescription,
+.reactionCount {
   color: #666;
   font-size: 1rem;
   cursor: pointer;

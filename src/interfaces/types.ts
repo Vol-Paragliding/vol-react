@@ -30,19 +30,26 @@ export interface VideoAttachment extends BaseAttachment {
   url: string;
 }
 
+export interface FlightStats {
+  flightDuration: string;
+  maxAltitude: number;
+  totalDistance: number;
+}
+
 export interface IGCFileAttachment extends BaseAttachment {
   type: "igc";
   url: {
     duration: string;
     file: string;
   };
+  data: FlightStats;
 }
 
-export type Attachment = ImageAttachment | VideoAttachment | IGCFileAttachment;
+export type AttachmentType = ImageAttachment | VideoAttachment | IGCFileAttachment;
 
 export interface PostActivity extends EnrichedActivity<DefaultGenerics> {
   actor: EnrichedUser<DefaultGenerics>;
-  attachments: Attachment[];
+  attachments: AttachmentType[];
   foreign_id: string;
   id: string;
   object: string;
@@ -111,7 +118,7 @@ export type UnknownRecord = UR;
 
 export type APIResponse = { duration?: string };
 
-export type FileUploadAPIResponse = APIResponse & { file: string };
+export type FileUploadAPIResponse = APIResponse & { file: string};
 
 export type OnUploadProgress = (progressEvent: ProgressEvent) => void;
 

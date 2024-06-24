@@ -10,7 +10,7 @@ const FeedsView: React.FC = () => {
   // if (isLoading) {
   //   return <div>Loading userActivities...</div>;
   // }
-
+console.log(userActivities)
   return (
     <div className={styles.feedsView}>
       {userActivities.map((activity) => (

@@ -1,13 +1,11 @@
 import React from "react";
-
-import { PostActivity } from "../../interfaces/types";
+import { IGCFileAttachment, PostActivity } from "../../interfaces/types";
 import ActivityFooter from "./ActivityFooter";
 import ActivityHeader from "./ActivityHeader";
 import Attachment from "./Attachment";
 import styles from "./Feeds.module.css";
 
 const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
-
   if (activity.verb !== "post") {
     return null;
   }
@@ -16,9 +14,19 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
     ? activity.attachments
     : [];
 
+  const igcAttachment = attachments.find(
+    (attachment) => attachment.type === "igc"
+  ) as IGCFileAttachment | undefined;
+
+  const flightStats = igcAttachment ? igcAttachment.data : undefined;
+
   return (
     <div className={styles.activityContainer}>
-      <ActivityHeader actor={activity.actor} time={activity.time} />
+      <ActivityHeader
+        actor={activity.actor}
+        time={activity.time}
+        stats={flightStats}
+      />
       {attachments.map((attachment, index) => (
         <Attachment key={index} attachment={attachment} />
       ))}
