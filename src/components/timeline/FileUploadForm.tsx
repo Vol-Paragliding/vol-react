@@ -1,20 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import {
-  StatusUpdateForm,
-  // NotificationDropdown,
-} from "react-activity-feed";
-import "react-activity-feed/dist/index.css";
-
 import { useFeed } from "../../contexts/feed/useFeed";
 import { parseIgcFile, extractFlightStatistics } from "../../utils/igcParser";
 import styles from "./AddNewPost.module.css";
-import { AttachmentType } from "../../interfaces/types";
 
-const AddNewPostView = () => {
+const FileUploadForm = () => {
   const { addActivity, feedUser } = useFeed();
   const [text, setText] = useState("");
   const [error, setError] = useState("");
-  const [attachments, setAttachments] = useState<AttachmentType[]>([]);
+  const [attachments, setAttachments] = useState<any[]>([]);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -29,22 +23,17 @@ const AddNewPostView = () => {
           file.type.startsWith("video/")
         ) {
           try {
-            let attachment: AttachmentType = {} as AttachmentType;
+            let attachment: any = {}; // Initialize as any type
             if (file.name.toLowerCase().endsWith(".igc")) {
               const igcContent = await file.text();
               const igcData = parseIgcFile(igcContent);
-              console.log("IGC Data: ", igcData);
               if (igcData) {
                 const flightStats = extractFlightStatistics(igcData);
-                console.log("Flight Stats: ", flightStats);
-                const url = await feedUser?.client.files.upload(file);
-                if (url?.duration && url.file && flightStats) {
+                const response = await feedUser?.client.files.upload(file);
+                if (response?.file) {
                   attachment = {
                     type: "igc",
-                    url: {
-                      duration: url.duration || "unknown",
-                      file: url.file,
-                    },
+                    url: response.file,
                     data: flightStats,
                   };
                 }
@@ -60,9 +49,7 @@ const AddNewPostView = () => {
                 url: response?.file ?? "",
               };
             }
-            setAttachments(
-              (current) => [...current, attachment] as AttachmentType[]
-            );
+            setAttachments((current) => [...current, attachment]);
           } catch (error) {
             console.error("Error processing file: ", error);
             setError("Failed to process file. Please try again later.");
@@ -105,10 +92,9 @@ const AddNewPostView = () => {
   };
 
   return (
-    <div className={styles.addNewPostView}>
-      <StatusUpdateForm />
+    <div className={styles.fileUploadForm}>
       <h1>Add New Post</h1>
-      <form onSubmit={handleSubmit} className={styles.addNewPostForm}>
+      <form onSubmit={handleSubmit} className={styles.uploadForm}>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -133,4 +119,4 @@ const AddNewPostView = () => {
   );
 };
 
-export default AddNewPostView;
+export default FileUploadForm;
