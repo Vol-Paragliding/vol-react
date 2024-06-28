@@ -5,7 +5,7 @@ import { FlightStats } from "../../interfaces/types";
 import { UserAvatar } from "../profile/UserAvatar";
 import { formatDateTime } from "../utils/dateUtils";
 import styles from "./Feeds.module.css";
-
+import { FollowButton } from "react-activity-feed";
 
 const ActivityHeader: React.FC<{
   actor: EnrichedUser;
@@ -27,16 +27,14 @@ const ActivityHeader: React.FC<{
           <>
             <div className={styles.statsItem}>
               <span className={styles.statsLabel}>Duration:</span>
-              <span className={styles.statsValue}>
-                {stats.flightDuration}
-              </span>
+              <span className={styles.statsValue}>{stats.flightDuration}</span>
             </div>
             <div className={styles.statsItem}>
               <span className={styles.statsLabel}>Max altitude:</span>
               <span className={styles.statsValue}>{stats.maxAltitude} m</span>
             </div>
             <div className={styles.statsItem}>
-              <span className={styles.statsLabel}>Distance from start:</span>
+              <span className={styles.statsLabel}>Distance:</span>
               <span className={styles.statsValue}>
                 {stats.totalDistance.toFixed(2)} km
               </span>
@@ -44,7 +42,12 @@ const ActivityHeader: React.FC<{
           </>
         )}
       </div>
-      <span className={styles.activityTimestamp}>{formattedTime}</span>
+      <div
+        style={{ display: "flex", flexDirection: "column", marginLeft: "auto" }}
+      >
+        <span className={styles.activityTimestamp}>{formattedTime}</span>
+        <FollowButton />
+      </div>
     </div>
   );
 };

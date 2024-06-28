@@ -1,8 +1,4 @@
 import { useState } from "react";
-import {
-  StatusUpdateForm,
-  // NotificationDropdown,
-} from "react-activity-feed";
 import "react-activity-feed/dist/index.css";
 
 import { useFeed } from "../../contexts/feed/useFeed";
@@ -106,7 +102,6 @@ const AddNewPostView = () => {
 
   return (
     <div className={styles.addNewPostView}>
-      <StatusUpdateForm />
       <h1>Add New Post</h1>
       <form onSubmit={handleSubmit} className={styles.addNewPostForm}>
         <textarea

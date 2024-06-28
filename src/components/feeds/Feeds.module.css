@@ -30,7 +30,7 @@
 }
 
 .activityTimestamp {
-  margin-left: auto;
+  /* margin-left: auto; */
   font-size: 0.85rem;
   color: #666;
 }

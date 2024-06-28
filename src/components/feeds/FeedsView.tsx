@@ -3,22 +3,24 @@ import React from "react";
 import { useFeed } from "../../contexts/feed/useFeed";
 import FeedActivity from "./FeedActivity";
 import styles from "./Feeds.module.css";
+import { FlatFeed } from "react-activity-feed";
 
 const FeedsView: React.FC = () => {
   const { userActivities } = useFeed();
 
-  // if (isLoading) {
-  //   return <div>Loading userActivities...</div>;
-  // }
-console.log(userActivities)
+  console.log(userActivities);
   return (
     <div className={styles.feedsView}>
-      {userActivities.map((activity) => (
-        <FeedActivity
-          key={activity.id}
-          activity={activity}
-        />
-      ))}
+      <FlatFeed
+        feedGroup="user"
+        options={{ limit: 2, withOwnChildren: true, withRecentReactions: true }}
+        Placeholder={() => <div>No activities yet...</div>}
+        Activity={({ activity }) => (
+          <>
+            <FeedActivity key={activity.id} activity={activity} />
+          </>
+        )}
+      />
     </div>
   );
 };

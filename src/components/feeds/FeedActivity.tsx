@@ -31,9 +31,8 @@ const FeedActivity: React.FC<{ activity: PostActivity }> = ({ activity }) => {
         <Attachment key={index} attachment={attachment} />
       ))}
       <ActivityFooter
-        actorName={String(activity.actor.id)}
+        activity={activity}
         object={activity.object as string}
-        replyCount={activity.reactionCounts?.replyCount ?? 0}
       />
     </div>
   );

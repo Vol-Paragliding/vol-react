@@ -3,6 +3,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import MessageIcon from "@material-ui/icons/Message";
 import AddBoxIcon from "@material-ui/icons/AddBox";
+import { NotificationDropdown } from "react-activity-feed";
 
 import appIcon from "../../assets/appIcon.png";
 import { useAuth } from "../../contexts/auth/useAuth";
@@ -33,6 +34,9 @@ const HeaderView = () => {
         <Link to="/home/newpost" className={styles.iconLink}>
           <AddBoxIcon />
         </Link>
+        <div style={{ height: '20px' }}>
+          <NotificationDropdown right width={300} />
+        </div>
       </div>
       <img
         className={`${styles.logo} logo`}

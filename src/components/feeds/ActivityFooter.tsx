@@ -1,11 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import styles from "./Feeds.module.css";
+import {
+  CommentField,
+  CommentItem,
+  CommentList,
+  LikeButton,
+} from "react-activity-feed";
 
 const ActivityFooter: React.FC<{
-  actorName: string;
+  activity: any;
   object: string;
-  replyCount: number;
-}> = ({ actorName, object, replyCount }) => {
+}> = ({ activity, object }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleToggleExpand = () => {
@@ -23,14 +29,30 @@ const ActivityFooter: React.FC<{
   return (
     <div className={styles.activityFooter}>
       <div className={styles.footerLeft}>
-        <span className={styles.activityFooterName}>{actorName}</span>
+        <span className={styles.activityFooterName}>{activity.actor.id}</span>
         <p className={styles.activityDescription} onClick={handleToggleExpand}>
           {renderDescription()}
         </p>
       </div>
-      <div className={styles.footerLeft}>
-        <span className={styles.reactionCount}>view {replyCount} comments</span>
-      </div>
+      <>
+        <LikeButton reaction={activity} />
+        <CommentField activity={activity} />
+        <CommentList
+          activityId={activity.id}
+          CommentItem={({ comment }) => (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <CommentItem comment={comment} />
+              <LikeButton reaction={comment} />
+            </div>
+          )}
+        />
+      </>
     </div>
   );
 };
