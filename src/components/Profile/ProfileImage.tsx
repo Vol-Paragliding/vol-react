@@ -1,6 +1,6 @@
 import React from "react";
 import { useFeed } from "../../contexts/feed/useFeed";
-import { EditProfileView, ProfileView, UserAvatar } from "../profile";
+import { EditProfileView, ProfileView, UserAvatar } from ".";
 
 export const ProfileImage: React.FC = () => {
   const { feedUser, viewMode, setViewMode } = useFeed();
@@ -10,6 +10,7 @@ export const ProfileImage: React.FC = () => {
   };
 
   const avatarUrl = feedUser?.data?.profilePicture ?? "";
+console.log(feedUser, "feed me a user");
 
   return (
     <div>
